@@ -35,8 +35,6 @@ public class Gui extends JFrame {
 		minimize =  new JButton("minimize");
 		area =  new JTextArea(595 , 842);
 		
-		
-		
 	}
 	
 	public static void main(String[] args){
