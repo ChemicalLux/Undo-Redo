@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Gui extends JFrame {
+public class Gui extends JFrame{
 	
 	JButton undo, redo, options, close, full, minimize;
 	JTextArea area;
@@ -19,11 +19,10 @@ public class Gui extends JFrame {
 		setSize(1300, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel1.setLayout(new GridBagLayout());
-		panel1.setVisible(true);
 		
-		frame1.setUndecorated(true);//makes the JFrame borderless
-		frame1.setResizable(true);
-		frame1.setVisible(true);
+		setUndecorated(true);//makes the JFrame borderless
+		setResizable(true);
+		setVisible(true);
 	
 		frame1.getContentPane().add( panel1 );
 		
@@ -34,6 +33,8 @@ public class Gui extends JFrame {
 		full =  new JButton("full");
 		minimize =  new JButton("minimize");
 		area =  new JTextArea(595 , 842);
+		
+		
 		
 	}
 	
