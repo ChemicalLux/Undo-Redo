@@ -16,10 +16,11 @@ public class Gui extends JFrame{
 		
 		JPanel panel1 = new JPanel();
 		
-		setSize(1300, 700);
+		//setSize(1300, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel1.setLayout(new GridBagLayout());
 		
+		setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes it full size
 		setUndecorated(true);//makes the JFrame borderless
 		setResizable(true);
 		setVisible(true);
