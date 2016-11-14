@@ -1,5 +1,7 @@
 package guiProject;
 
+import java.io.RandomAccessFile;
+
 /**
  * @author Dan Gavin	
  * 
@@ -90,5 +92,34 @@ public class StringNodeArray {
 		}
 		
 		return fullList;
+	}
+	
+	public boolean save(String filename,StringNode[] undoList, StringNode[] redoList, String[] textArea){
+		try{
+			RandomAccessFile file = new RandomAccessFile(filename,"rw");
+			for(int j=0; j < textArea.length; j++){
+				file.writeChars(textArea[j]);
+			}
+			file.writeChars("*UndoList*");
+			for(int i = 0; i < undoList.length; i++){
+				file.writeChars(getNode(i));
+			}
+			file.writeChars("*RedoList*");
+			for(int k = 0; k < redoList.length; k++){
+				file.writeChars(getNode(k));
+			}
+			file.close();
+			return true;
+		}
+		catch(Exception e){
+			return false;
+		}
+	}
+	
+	public boolean load(String filename){
+		try{
+			RandomAccessFile file = new RandomAccessFile(filename, "r");
+			
+		}
 	}
 }
