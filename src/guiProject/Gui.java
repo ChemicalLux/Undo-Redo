@@ -47,7 +47,6 @@ public class Gui extends JFrame{
 		full.addActionListener(this);
 		minimize.addActionListener(this);
 		
-		
 	}
 	
 	public static void main(String[] args){
