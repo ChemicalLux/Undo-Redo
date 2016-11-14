@@ -116,10 +116,25 @@ public class StringNodeArray {
 		}
 	}
 	
-	public boolean load(String filename){
+	public String[] load(String filename){
+		StringNodeArray undoList;
 		try{
 			RandomAccessFile file = new RandomAccessFile(filename, "r");
+			String[] textArea = new String[(int)file.length()];
+			for(int i = 0; i < file.length(); i++){
+				if(file.readLine() != "*UndoList*"){
+					textArea[i] = file.readLine();
+				}
+				else if(file.readLine() == "*UndoList*"){
+					undoList.addNode(file.readLine(), file.readLine());
+				}
+			}
 			
+			file.close();
+			return true;
+		}
+		catch(Exception E){
+			return false;
 		}
 	}
 }
