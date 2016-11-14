@@ -16,11 +16,19 @@ public class Gui extends JFrame{
 		
 		JPanel panel1 = new JPanel();
 		
+<<<<<<< HEAD
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel1.setLayout(new GridBagLayout());
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+=======
+		//setSize(1300, 700);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		panel1.setLayout(new GridBagLayout());
+		
+		setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes it full size
+>>>>>>> aa229e2e8f588a393d16ed9c190374dcda0e0724
 		setUndecorated(true);//makes the JFrame borderless
 		setResizable(true);
 		setVisible(true);
@@ -34,8 +42,6 @@ public class Gui extends JFrame{
 		full =  new JButton("full");
 		minimize =  new JButton("minimize");
 		area =  new JTextArea(595 , 842);
-		
-		
 		
 	}
 	
