@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Gui extends JFrame{
+public class Gui extends JFrame implements ActionListener{
 	
 	JButton undo, redo, options, close, full, minimize;
 	JTextArea area;
@@ -34,6 +34,15 @@ public class Gui extends JFrame{
 		full =  new JButton("full");
 		minimize =  new JButton("minimize");
 		area =  new JTextArea(595 , 842);
+		scroll = new JScrollPane(area);
+		
+		undo.addActionListener(this);
+		redo.addActionListener(this);
+		options.addActionListener(this);
+		close.addActionListener(this);
+		full.addActionListener(this);
+		minimize.addActionListener(this);
+		
 		
 	}
 	
