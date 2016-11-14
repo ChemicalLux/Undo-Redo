@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Gui extends JFrame implements ActionListener{
+public class Gui extends JFrame{
 	
 	JButton undo, redo, options, close, full, minimize;
 	JTextArea area;
@@ -16,6 +16,10 @@ public class Gui extends JFrame implements ActionListener{
 		
 		JPanel panel1 = new JPanel();
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		panel1.setLayout(new GridBagLayout());
+		
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		//setSize(1300, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel1.setLayout(new GridBagLayout());
