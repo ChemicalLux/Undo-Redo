@@ -97,15 +97,14 @@ public class StringNodeArray {
 	public boolean save(String filename,StringNode[] undoList, StringNode[] redoList, String[] textArea){
 		try{
 			RandomAccessFile file = new RandomAccessFile(filename,"rw");
-			for(int j=0; j < textArea.length; j++){
-				file.writeChars(textArea[j]);
-			}
 			file.writeChars("*UndoList*");
 			for(int i = 0; i < undoList.length; i++){
+				file.writeChars("\n");
 				file.writeChars(getNode(i));
 			}
 			file.writeChars("*RedoList*");
 			for(int k = 0; k < redoList.length; k++){
+				file.writeChars("\n");
 				file.writeChars(getNode(k));
 			}
 			file.close();
@@ -116,17 +115,22 @@ public class StringNodeArray {
 		}
 	}
 	
-	public String[] load(String filename){
-		StringNodeArray undoList;
+	public boolean load(String filename){
 		try{
+			StringNodeArray undoList = null;
+			StringNodeArray redoList = null;
+			int dataPos;
 			RandomAccessFile file = new RandomAccessFile(filename, "r");
-			String[] textArea = new String[(int)file.length()];
 			for(int i = 0; i < file.length(); i++){
-				if(file.readLine() != "*UndoList*"){
-					textArea[i] = file.readLine();
+				if(file.readLine() == "*UndoList*"){
+					dataPos = file.readLine().indexOf("Data: ", 0);
+					dataPos = dataPos + 6;
+					undoList.addNode(file.readInt(), file.readLine().substring(dataPos, file.readLine().length()));
 				}
-				else if(file.readLine() == "*UndoList*"){
-					undoList.addNode(file.readLine(), file.readLine());
+				if(file.readLine() == "*RedoList*"){
+					dataPos = file.readLine().indexOf("Data: ", 0);
+					dataPos = dataPos + 6;
+					redoList.addNode(file.readInt(), file.readLine().substring(dataPos, file.readLine().length()));
 				}
 			}
 			
