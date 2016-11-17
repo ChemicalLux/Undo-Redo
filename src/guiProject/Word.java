@@ -53,28 +53,28 @@ public class Word extends JFrame{
 		
 	//******************** Tool Bar vareabls ********************
 		private JToolBar tool=new JToolBar();
-		private ImageIcon new_icon= new ImageIcon("New.gif");
+		private ImageIcon new_icon= new ImageIcon("/src/images/New.gif");
 		private JButton new_button= new JButton(new_icon);
-		private ImageIcon open_icon= new ImageIcon("Open.gif");
+		private ImageIcon open_icon= new ImageIcon("/src/images/Open.gif");
 		private JButton open_button= new JButton(open_icon);
-		private ImageIcon save_icon= new ImageIcon("Save.gif");
+		private ImageIcon save_icon= new ImageIcon("/src/images/Save.gif");
 		private JButton save_button= new JButton(save_icon);
-		private ImageIcon print_icon= new ImageIcon("Print.gif");
+		private ImageIcon print_icon= new ImageIcon("/src/images/Print.gif");
 		private JButton print_button= new JButton(print_icon);
-		private ImageIcon cut_icon= new ImageIcon("Cut.gif");
+		private ImageIcon cut_icon= new ImageIcon("/src/images/Cut.gif");
 		private JButton cut_button= new JButton(cut_icon);
-		private ImageIcon copy_icon= new ImageIcon("Copy.gif");
+		private ImageIcon copy_icon= new ImageIcon("/src/images/Copy.gif");
 		private JButton copy_button= new JButton(copy_icon);
-		private ImageIcon paste_icon= new ImageIcon("Paste.gif");
+		private ImageIcon paste_icon= new ImageIcon("/src/images/Paste.gif");
 		private JButton paste_button= new JButton(paste_icon);
 		
 	//******************** Font Bar vareabls ********************
 		private JToolBar tool_font=new JToolBar();
-		private ImageIcon bold_icon= new ImageIcon("Bld.gif");
+		private ImageIcon bold_icon= new ImageIcon("/src/images/Bld.gif");
 		private JToggleButton bold_button=new JToggleButton(new StyledEditorKit.BoldAction());
-		private ImageIcon italic_icon= new ImageIcon("Itl.gif");
+		private ImageIcon italic_icon= new ImageIcon("/src/images/Itl.gif");
 		private JToggleButton italic_button=new JToggleButton(new StyledEditorKit.ItalicAction());
-		private ImageIcon under_line_icon= new ImageIcon("Undrln.gif");
+		private ImageIcon under_line_icon= new ImageIcon("/src/images/Undrln.gif");
 		private JToggleButton under_line_button=new JToggleButton(new StyledEditorKit.UnderlineAction());
 		private String font_names[]={"Monospaced","Times New Roman","Courier","Tahoma","MS Serif",
 				"Andalus","Monotype Koufi","Simplified Arabic"};
@@ -379,10 +379,6 @@ public class Word extends JFrame{
 			container.add(text,BorderLayout.CENTER);
 			container.add(new JScrollPane(text),BorderLayout.CENTER);
 			setSize(500,400);
-			setVisible(true);
-			setLocation(150,80);
-			setResizable(false);
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 	//********************* Default Close From Windows **************
 			addWindowListener(new WindowAdapter()
@@ -397,7 +393,11 @@ public class Word extends JFrame{
 	//********************* MAIN FUNCTION SECTION *******************
 		public static void main(String asgv[])
 		{
-			Word w =new Word();
+			Word w=new Word();
+			w.setVisible(true);
+			w.setLocation(150,80);
+			w.setResizable(false);
+			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 	//********************* NEW_FILE Function ***********************
 		public void NEW_FILE()
