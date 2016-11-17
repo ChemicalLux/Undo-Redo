@@ -394,16 +394,6 @@ public class Word extends JFrame{
 		public static void main(String asgv[])
 		{
 			Word w=new Word();
-			JSplash splash=new JSplash(w);
-			splash.setVisible(true);
-			try
-			{
-				Thread.sleep(5000);
-			}
-			catch(Exception ex)
-			{}
-			w.setVisible(true);
-			splash.setVisible(false);
 			w.setLocation(150,80);
 			w.setResizable(false);
 			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
