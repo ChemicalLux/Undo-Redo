@@ -93,7 +93,14 @@ public class StringNodeArray {
 		
 		return fullList;
 	}
-	
+	/**
+	 * @author Eric Larocque
+	 * @param filename
+	 * @param undoList
+	 * @param redoList
+	 * @param textArea
+	 * @return
+	 */
 	public boolean save(String filename,StringNode[] undoList, StringNode[] redoList, String[] textArea){
 		try{
 			RandomAccessFile file = new RandomAccessFile(filename,"rw");
@@ -114,23 +121,28 @@ public class StringNodeArray {
 			return false;
 		}
 	}
-	
+	/**
+	 * @author Eric Larocque
+	 * @param filename
+	 * @return
+	 */
 	public boolean load(String filename){
 		try{
 			StringNodeArray undoList = null;
 			StringNodeArray redoList = null;
 			int dataPos;
+			int position;
 			RandomAccessFile file = new RandomAccessFile(filename, "r");
-			for(int i = 0; i < file.length(); i++){
+			while(file.readLine() != null){
 				if(file.readLine() == "*UndoList*"){
-					dataPos = file.readLine().indexOf("Data: ", 0);
-					dataPos = dataPos + 6;
-					undoList.addNode(file.readInt(), file.readLine().substring(dataPos, file.readLine().length()));
+					position = file.readLine().indexOf("Position: ", 0);
+					dataPos = file.readLine().indexOf("Data: ", position);
+					undoList.addNode(Integer.parseInt(file.readLine().substring(position, dataPos)), file.readLine().substring(dataPos + 6, file.readLine().length()));
 				}
 				if(file.readLine() == "*RedoList*"){
-					dataPos = file.readLine().indexOf("Data: ", 0);
-					dataPos = dataPos + 6;
-					redoList.addNode(file.readInt(), file.readLine().substring(dataPos, file.readLine().length()));
+					position = file.readLine().indexOf("Position: ", 0);
+					dataPos = file.readLine().indexOf("Data: ", position);
+					redoList.addNode(Integer.parseInt(file.readLine().substring(position + 10, dataPos)), file.readLine().substring(dataPos + 6, file.readLine().length()));
 				}
 			}
 			

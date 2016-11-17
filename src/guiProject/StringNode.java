@@ -46,7 +46,7 @@ public class StringNode {
 	
 	public String toString(){
 		
-		return "Data: " + data + " Position: " + pos; 
+		return "Position: " + pos + "Data: " + data; 
 	}
 	
 	
