@@ -445,7 +445,7 @@ public class Word extends JFrame{
 				{
 					try
 					{
-						BufferedReader stream=new BufferedReader(new FileReader (Opened_file));
+						BufferedReader stream = new BufferedReader(new FileReader (Opened_file));
 						String line;
 						output="";
 						while((line=stream.readLine())!=null)
