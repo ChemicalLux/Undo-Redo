@@ -379,6 +379,10 @@ public class Word extends JFrame{
 			container.add(text,BorderLayout.CENTER);
 			container.add(new JScrollPane(text),BorderLayout.CENTER);
 			setSize(500,400);
+			setVisible(true);
+			setLocation(150,80);
+			setResizable(false);
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 	//********************* Default Close From Windows **************
 			addWindowListener(new WindowAdapter()
@@ -393,10 +397,7 @@ public class Word extends JFrame{
 	//********************* MAIN FUNCTION SECTION *******************
 		public static void main(String asgv[])
 		{
-			Word w=new Word();
-			w.setLocation(150,80);
-			w.setResizable(false);
-			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			Word w =new Word();
 		}
 	//********************* NEW_FILE Function ***********************
 		public void NEW_FILE()

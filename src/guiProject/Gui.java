@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Gui extends JFrame{
+/*public class Gui extends JFrame{
 	
 	JButton undo, redo, options, close, full, minimize;
 	JTextArea area;
