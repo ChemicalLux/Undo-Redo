@@ -76,7 +76,7 @@ public class Word extends JFrame{
 		
 	//******************** Font Bar vareabls ********************
 		private JToolBar tool_font=new JToolBar();
-		private ImageIcon bold_icon= new ImageIcon("images/BOLD.GIF");
+		private ImageIcon bold_icon= new ImageIcon("images/BLD.GIF");
 		private JToggleButton bold_button=new JToggleButton(new StyledEditorKit.BoldAction());
 		private ImageIcon italic_icon= new ImageIcon("images/ITL.GIF");
 		private JToggleButton italic_button=new JToggleButton(new StyledEditorKit.ItalicAction());
