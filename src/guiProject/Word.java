@@ -42,7 +42,7 @@ public class Word extends JFrame{
 	//******************* File & Edit & Format Menu vareabls ********************
 		private JMenu file, edit, format, color, fonts;
 		private JMenuItem New, open, close, save, save_as, print, exit,
-						copy, cut, paste, replace, select_all;
+						copy, cut, paste, replace, select_all, undo, redo;
 		private ButtonGroup font_group;
 		private ButtonGroup color_group;
 		private String color_name[]={"Black","Green","Blou","Red","Yellow"};
@@ -67,10 +67,16 @@ public class Word extends JFrame{
 		private JButton copy_button= new JButton(copy_icon);
 		private ImageIcon paste_icon= new ImageIcon("images/PASTE.GIF");
 		private JButton paste_button= new JButton(paste_icon);
+		private ImageIcon undo_icon= new ImageIcon("images/UNDO.png");
+		private JButton undo_button= new JButton(undo_icon);
+		private ImageIcon redo_icon= new ImageIcon("images/REDO.png");
+		private JButton redo_button= new JButton(redo_icon);
+		private ImageIcon option_icon= new ImageIcon("images/OPTION.png");
+		private JButton option_button= new JButton(option_icon);
 		
 	//******************** Font Bar vareabls ********************
 		private JToolBar tool_font=new JToolBar();
-		private ImageIcon bold_icon= new ImageIcon("images/BlLD.GIF");
+		private ImageIcon bold_icon= new ImageIcon("images/BOLD.GIF");
 		private JToggleButton bold_button=new JToggleButton(new StyledEditorKit.BoldAction());
 		private ImageIcon italic_icon= new ImageIcon("images/ITL.GIF");
 		private JToggleButton italic_button=new JToggleButton(new StyledEditorKit.ItalicAction());
@@ -163,6 +169,14 @@ public class Word extends JFrame{
 			select_all= new JMenuItem("Select All");
 			select_all.setMnemonic('l');
 			select_all.addActionListener(itemHandler);
+			//===================== UNDO Item =====================
+			undo= new JMenuItem("Undo");
+			undo.setMnemonic('u');
+			undo.addActionListener(itemHandler);
+			//===================== Copy Item =====================
+			redo= new JMenuItem("Redo");
+			redo.setMnemonic('q');
+			redo.addActionListener(itemHandler);
 		//================ Add Items To The Edit Menu ===============
 			edit= new JMenu("Edit");
 			edit.setMnemonic('E');
@@ -170,6 +184,8 @@ public class Word extends JFrame{
 			edit.add(copy);
 			edit.add(replace);
 			edit.add(paste);
+			edit.add(undo);
+			edit.add(redo);
 			edit.addSeparator();
 			edit.add(select_all);
 			
@@ -278,6 +294,10 @@ public class Word extends JFrame{
 			tool.add(cut_button);
 			tool.add(copy_button);
 			tool.add(paste_button);
+			tool.addSeparator();
+			tool.add(undo_button);
+			tool.add(redo_button);
+			tool.add(option_button);
 			tool.setVisible(true);
 			tool.setEnabled(false);
 	//*********************** FONT BAR SECTION **********************
