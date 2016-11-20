@@ -16,10 +16,12 @@ public class Word extends JFrame{
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
-		private FlowLayout flow=new FlowLayout(FlowLayout.LEFT,0,0);
-		private JPanel panel=new JPanel(new BorderLayout());
-		private RTFEditorKit rtfKit=new RTFEditorKit();
+		private FlowLayout flow = new FlowLayout(FlowLayout.LEFT,0,0);
+		private JPanel panel = new JPanel(new BorderLayout());
+		private RTFEditorKit rtfKit = new RTFEditorKit();
 		public FindReplaceDialog rplace_frame;
+		private JPanel optionMenu = new JPanel(new GridLayout(3,2));
+		private JFrame optMenu = new JFrame("Undo Redo Option Menu");
 		
 		private String output="";
 		private String output_stream="";
@@ -27,8 +29,8 @@ public class Word extends JFrame{
 		private int font_style=0;
 		private int font_size_i=12;
 		private int end_of_file;
-		private final int CONST_BOLD=Font.BOLD;
-		private final int CONST_ITALIC=Font.ITALIC;
+		private final int CONST_BOLD = Font.BOLD;
+		private final int CONST_ITALIC = Font.ITALIC;
 		private final int CONST_NULL=0;
 		private boolean flage_bold=false;
 		private boolean flage_italic=false;
@@ -52,42 +54,47 @@ public class Word extends JFrame{
 		private JCheckBoxMenuItem bold, italic, under_line;
 		
 	//******************** Tool Bar vareabls ********************
-		private JToolBar tool=new JToolBar();
-		private ImageIcon new_icon= new ImageIcon("images/NEW.GIF");
-		private JButton new_button= new JButton(new_icon);
-		private ImageIcon open_icon= new ImageIcon("images/OPEN.GIF");
-		private JButton open_button= new JButton(open_icon);
-		private ImageIcon save_icon= new ImageIcon("images/SAVE.GIF");
-		private JButton save_button= new JButton(save_icon);
-		private ImageIcon print_icon= new ImageIcon("images/PRINT.GIF");
-		private JButton print_button= new JButton(print_icon);
-		private ImageIcon cut_icon= new ImageIcon("images/CUT.GIF");
-		private JButton cut_button= new JButton(cut_icon);
-		private ImageIcon copy_icon= new ImageIcon("images/COPY.GIF");
-		private JButton copy_button= new JButton(copy_icon);
-		private ImageIcon paste_icon= new ImageIcon("images/PASTE.GIF");
-		private JButton paste_button= new JButton(paste_icon);
-		private ImageIcon undo_icon= new ImageIcon("images/UNDO.png");
-		private JButton undo_button= new JButton(undo_icon);
-		private ImageIcon redo_icon= new ImageIcon("images/REDO.png");
-		private JButton redo_button= new JButton(redo_icon);
-		private ImageIcon option_icon= new ImageIcon("images/OPTION.png");
-		private JButton option_button= new JButton(option_icon);
+		private JToolBar tool = new JToolBar();
+		private ImageIcon new_icon = new ImageIcon("images/NEW.GIF");
+		private JButton new_button = new JButton(new_icon);
+		private ImageIcon open_icon = new ImageIcon("images/OPEN.GIF");
+		private JButton open_button = new JButton(open_icon);
+		private ImageIcon save_icon = new ImageIcon("images/SAVE.GIF");
+		private JButton save_button = new JButton(save_icon);
+		private ImageIcon print_icon = new ImageIcon("images/PRINT.GIF");
+		private JButton print_button = new JButton(print_icon);
+		private ImageIcon cut_icon = new ImageIcon("images/CUT.GIF");
+		private JButton cut_button = new JButton(cut_icon);
+		private ImageIcon copy_icon = new ImageIcon("images/COPY.GIF");
+		private JButton copy_button = new JButton(copy_icon);
+		private ImageIcon paste_icon = new ImageIcon("images/PASTE.GIF");
+		private JButton paste_button = new JButton(paste_icon);
+		private ImageIcon undo_icon = new ImageIcon("images/UNDO.png");
+		private JButton undo_button = new JButton(undo_icon);
+		private ImageIcon redo_icon = new ImageIcon("images/REDO.png");
+		private JButton redo_button = new JButton(redo_icon);
+		private ImageIcon option_icon = new ImageIcon("images/OPTION.png");
+		private JButton option_button = new JButton(option_icon);
 		
 	//******************** Font Bar vareabls ********************
-		private JToolBar tool_font=new JToolBar();
-		private ImageIcon bold_icon= new ImageIcon("images/BLD.GIF");
-		private JToggleButton bold_button=new JToggleButton(new StyledEditorKit.BoldAction());
-		private ImageIcon italic_icon= new ImageIcon("images/ITL.GIF");
-		private JToggleButton italic_button=new JToggleButton(new StyledEditorKit.ItalicAction());
-		private ImageIcon under_line_icon= new ImageIcon("images/UNDRLN.GIF");
-		private JToggleButton under_line_button=new JToggleButton(new StyledEditorKit.UnderlineAction());
+		private JToolBar tool_font = new JToolBar();
+		private ImageIcon bold_icon = new ImageIcon("images/BLD.GIF");
+		private JToggleButton bold_button = new JToggleButton(new StyledEditorKit.BoldAction());
+		private ImageIcon italic_icon = new ImageIcon("images/ITL.GIF");
+		private JToggleButton italic_button = new JToggleButton(new StyledEditorKit.ItalicAction());
+		private ImageIcon under_line_icon = new ImageIcon("images/UNDRLN.GIF");
+		private JToggleButton under_line_button = new JToggleButton(new StyledEditorKit.UnderlineAction());
 		private String font_names[]={"Monospaced","Times New Roman","Courier","Tahoma","MS Serif",
 				"Andalus","Monotype Koufi","Simplified Arabic"};
 		private String font_sizes[]={"10","12","14","16","18","20","22","24","26",
 				"28","32","36","40","46","52","60","72"};
-		private JComboBox font_name=new JComboBox(font_names);
-		private JComboBox font_size=new JComboBox(font_sizes);
+		private JComboBox font_name = new JComboBox(font_names);
+		private JComboBox font_size = new JComboBox(font_sizes);
+		
+	//******************** Option Menu vareabls ********************
+		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
+		private JButton redo_button1 = new JButton("Undo Text");
+		private JButton undo_button1 = new JButton("Redo Text");
 		
 	//********************* CONSTRACTOR SECTION *********************
 		public Word()
@@ -170,11 +177,11 @@ public class Word extends JFrame{
 			select_all.setMnemonic('l');
 			select_all.addActionListener(itemHandler);
 			//===================== UNDO Item =====================
-			undo= new JMenuItem("Undo", undo_icon);
+			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
 			//===================== Copy Item =====================
-			redo= new JMenuItem("Redo", undo_icon);
+			redo= new JMenuItem("Redo Text", undo_icon);
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
 			//===================== Copy Item =====================
@@ -289,6 +296,15 @@ public class Word extends JFrame{
 		//===================== Paste Button ==================
 			paste_button.setToolTipText("Paste Selected Text");
 			paste_button.addActionListener(itemHandler);
+			//===================== Paste Button ==================
+			undo_button.setToolTipText("Undo Text");
+			undo_button.addActionListener(itemHandler);
+			//===================== Paste Button ==================
+			redo_button.setToolTipText("Redo Text");
+			redo_button.addActionListener(itemHandler);
+			//===================== Paste Button ==================
+			option_button.setToolTipText("Undo/Redo Advanced Options");
+			option_button.addActionListener(itemHandler);
 		//===================== Add Buttons To Tool Bar =============
 			tool.setLayout(flow);
 			tool.add(new_button);
@@ -405,7 +421,22 @@ public class Word extends JFrame{
 			container.add(text,BorderLayout.CENTER);
 			container.add(new JScrollPane(text),BorderLayout.CENTER);
 			setSize(500,400);
-			
+	//*********************** Option SECTION **********************		
+			selected.setMnemonic('s');
+			redo_button1.setToolTipText("Redo Text");
+			redo_button1.addActionListener(itemHandler);
+			undo_button1.setToolTipText("Undo Text");
+			undo_button1.addActionListener(itemHandler);
+			optionMenu.add(selected);
+			optionMenu.add(new JLabel(""));
+			optionMenu.add(undo_button1);
+			optionMenu.add(redo_button1);
+			optionMenu.setVisible(true);
+			optionMenu.setSize(300,400);
+			optMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			optMenu.add(optionMenu);
+			optMenu.setVisible(false);
+			optMenu.setSize(300,400);
 	//********************* Default Close From Windows **************
 			addWindowListener(new WindowAdapter()
 			{
@@ -422,7 +453,7 @@ public class Word extends JFrame{
 			Word w=new Word();
 			w.setVisible(true);
 			w.setLocation(150,80);
-			w.setResizable(false);
+			w.setResizable(true);
 			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 	//********************* NEW_FILE Function ***********************
@@ -717,6 +748,9 @@ public class Word extends JFrame{
 			{}
 			if(event.getSource()==under_line_button)
 			{}
+			if(event.getSource()==option_button){
+				optMenu.setVisible(true);
+			}
 			for(int k=0;k<font_names.length;k++)
 				if(font_item[k].isSelected())
 				{
