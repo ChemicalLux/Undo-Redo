@@ -414,14 +414,8 @@ public class Word extends JFrame{
 						font_size.setSelectedItem(String.valueOf(font_size_i));
 				}
 			});
-			SetDisable_JTextPane();
-			container=getContentPane();
-			container.setLayout(new BorderLayout());
-			container.add(panel,BorderLayout.NORTH);
-			container.add(text,BorderLayout.CENTER);
-			container.add(new JScrollPane(text),BorderLayout.CENTER);
-			setSize(500,400);
-	//*********************** Option SECTION **********************		
+			
+			//*********************** Option SECTION **********************		
 			selected.setMnemonic('s');
 			redo_button1.setToolTipText("Redo Text");
 			redo_button1.addActionListener(itemHandler);
@@ -436,6 +430,14 @@ public class Word extends JFrame{
 			optMenu.add(optionMenu);
 			optMenu.setVisible(false);
 			optMenu.setSize(300,400);
+	//******************* Main GUI *******************************
+			SetDisable_JTextPane();
+			container=getContentPane();
+			container.setLayout(new BorderLayout());
+			container.add(panel,BorderLayout.NORTH);
+			container.add(text,BorderLayout.CENTER);
+			container.add(new JScrollPane(text),BorderLayout.CENTER);
+			container.add(optionMenu, BorderLayout.EAST);
 	//********************* Default Close From Windows **************
 			addWindowListener(new WindowAdapter()
 			{
@@ -451,7 +453,7 @@ public class Word extends JFrame{
 		{
 			Word w=new Word();
 			w.setVisible(true);
-			w.setLocation(150,80);
+			w.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			w.setResizable(true);
 			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
