@@ -433,7 +433,6 @@ public class Word extends JFrame{
 			optionMenu.add(redo_button1);
 			optionMenu.setVisible(true);
 			optionMenu.setSize(300,400);
-			optMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			optMenu.add(optionMenu);
 			optMenu.setVisible(false);
 			optMenu.setSize(300,400);
@@ -454,6 +453,7 @@ public class Word extends JFrame{
 			w.setVisible(true);
 			w.setLocation(150,80);
 			w.setResizable(true);
+			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 	//********************* NEW_FILE Function ***********************
 		public void NEW_FILE()
