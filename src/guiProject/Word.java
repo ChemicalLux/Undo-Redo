@@ -772,6 +772,14 @@ public class Word extends JFrame{
 			repaint();
 		}
 	}
+	
+	public class keyEvent implements KeyListener{
+		public void keyPressed(KeyEvent e){
+			if(e.getKeyChar() == '.' || e.getKeyChar() == '?' || e.getKeyChar() == '!'){
+				
+			}
+		}
+	}
 	//*************************** PRINT CLASS ************************
 		private class Print implements Printable
 		{
