@@ -786,13 +786,12 @@ public class Word extends JFrame{
 	
 	public abstract class keyEvent implements KeyListener{
 		public void keyPressed(KeyEvent ke){
-			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!'){
-				int startPos = text.getDocument().toString().indexOf(ke.getKeyChar(), 0);
+			int startPos = text.getDocument().toString().indexOf(ke.getKeyChar(), 0); 
+			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!' || ke.getKeyCode() == 13){
 				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
 				startPos = text.getDocument().toString().length() + 1;
 			}
 		}
-		
 	}
 	//*************************** PRINT CLASS ************************
 		private class Print implements Printable
