@@ -22,8 +22,8 @@ public class Word extends JFrame{
 		private JPanel panel = new JPanel(new BorderLayout());
 		private RTFEditorKit rtfKit = new RTFEditorKit();
 		public FindReplaceDialog rplace_frame;
-		private JPanel optionMenu = new JPanel(new GridLayout(3,2));
-		private JFrame optMenu = new JFrame("Undo Redo Option Menu");
+		private JPanel optionMenu = new JPanel(flow);
+		private JPanel optMenu = new JPanel(flow);
 		
 		private String output="";
 		private String output_stream="";
@@ -94,6 +94,8 @@ public class Word extends JFrame{
 		private JComboBox font_size = new JComboBox(font_sizes);
 		
 	//******************** Option Menu variables ********************
+		private JToolBar option = new JToolBar();
+		private JToolBar option2 = new JToolBar();
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
 		private JButton redo_button1 = new JButton("Undo Text");
 		private JButton undo_button1 = new JButton("Redo Text");
@@ -371,22 +373,20 @@ public class Word extends JFrame{
 			under_line_button.setIcon(under_line_icon);
 			under_line_button.setToolTipText("UnderLine Style");
 			under_line_button.addActionListener(itemHandler);
-		//===================== Add Buttons To Font Bar =======
-			tool_font.setLayout(flow);
-			tool_font.add(font_name);
-			tool_font.addSeparator();
-			tool_font.add(font_size);
-			tool_font.addSeparator();
-			tool_font.add(bold_button);
-			tool_font.add(italic_button);
-			tool_font.add(under_line_button);
-			tool_font.addSeparator();
-			tool_font.setVisible(true);
-			tool_font.setEnabled(false);
+		//===================== Add Buttons To Bar =======
+			tool.add(font_name);
+			tool.addSeparator();
+			tool.add(font_size);
+			tool.addSeparator();
+			tool.add(bold_button);
+			tool.add(italic_button);
+			tool.add(under_line_button);
+			tool.addSeparator();
+			tool.setVisible(true);
+			tool.setEnabled(false);
 		//===================== Add ToolBar & FontBar To Panel ======
 			panel.setBorder(BorderFactory.createEtchedBorder());
 			panel.add(tool,BorderLayout.NORTH);
-			panel.add(tool_font,BorderLayout.SOUTH);
 			
 	//***************** Add All Componant To the Container **********
 			text=new JTextPane();
@@ -417,21 +417,32 @@ public class Word extends JFrame{
 				}
 			});
 			
-			//*********************** Option SECTION **********************		
+	//*********************** Option SECTION **********************		
 			selected.setMnemonic('s');
 			redo_button1.setToolTipText("Redo Text");
 			redo_button1.addActionListener(itemHandler);
 			undo_button1.setToolTipText("Undo Text");
 			undo_button1.addActionListener(itemHandler);
-			optionMenu.add(selected);
-			optionMenu.add(new JLabel(""));
-			optionMenu.add(undo_button1);
-			optionMenu.add(redo_button1);
+	//*********************** Sorting ***************
+			option2.setLayout(flow);
+			option2.add(selected);
+			option2.addSeparator();
+			option2.setVisible(true);
+			option2.setEnabled(false);
+			option.setLayout(flow);
+			option.add(undo_button1);
+			option.add(redo_button1);
+			option.addSeparator();
+			option.setVisible(true);
+			option.setEnabled(false);
+	//*********************** Adding to Option Menu ***************
+			optMenu.setSize(200,200);
+			optMenu.add(option2,BorderLayout.NORTH);
+			optMenu.add(option, BorderLayout.SOUTH);
+			optionMenu.setBorder(BorderFactory.createEtchedBorder());
+			optionMenu.add(optMenu,BorderLayout.NORTH);
 			optionMenu.setVisible(true);
-			optionMenu.setSize(300,400);
-			optMenu.add(optionMenu);
-			optMenu.setVisible(false);
-			optMenu.setSize(300,400);
+			optionMenu.setSize(200,400);
 	//******************* Main GUI *******************************
 			SetDisable_JTextPane();
 			container=getContentPane();
