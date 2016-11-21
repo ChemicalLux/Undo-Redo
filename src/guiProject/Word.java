@@ -321,9 +321,6 @@ public class Word extends JFrame{
 			tool.add(copy_button);
 			tool.add(paste_button);
 			tool.addSeparator();
-			tool.add(undo_button);
-			tool.add(redo_button);
-			tool.add(option_button);
 			tool.setVisible(true);
 			tool.setEnabled(false);
 	//*********************** FONT BAR SECTION **********************
@@ -382,6 +379,9 @@ public class Word extends JFrame{
 			tool.add(italic_button);
 			tool.add(under_line_button);
 			tool.addSeparator();
+			tool.add(undo_button);
+			tool.add(redo_button);
+			tool.add(option_button);
 			tool.setVisible(true);
 			tool.setEnabled(false);
 		//===================== Add ToolBar & FontBar To Panel ======
