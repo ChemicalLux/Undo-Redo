@@ -101,16 +101,16 @@ public class StringNodeArray {
 	 * @param textArea
 	 * @return
 	 */
-	public boolean save(String filename,StringNode[] undoList, StringNode[] redoList, String[] textArea){
+	public boolean save(StringNodeArray List){
 		try{
-			RandomAccessFile file = new RandomAccessFile(filename,"rw");
+			RandomAccessFile file = new RandomAccessFile("undo-redo.dat","rw");
 			file.writeChars("*UndoList*");
-			for(int i = 0; i < undoList.length; i++){
+			for(int i = 0; i < List.length; i++){
 				file.writeChars("\n");
 				file.writeChars(getNode(i));
 			}
 			file.writeChars("*RedoList*");
-			for(int k = 0; k < redoList.length; k++){
+			for(int k = 0; k < redoList.; k++){
 				file.writeChars("\n");
 				file.writeChars(getNode(k));
 			}
@@ -126,13 +126,13 @@ public class StringNodeArray {
 	 * @param filename
 	 * @return
 	 */
-	public boolean load(String filename){
+	public boolean load(){
 		try{
 			StringNodeArray undoList = null;
 			StringNodeArray redoList = null;
 			int dataPos;
 			int position;
-			RandomAccessFile file = new RandomAccessFile(filename, "r");
+			RandomAccessFile file = new RandomAccessFile("undo-redo.dat", "r");
 			while(file.readLine() != null){
 				if(file.readLine() == "*UndoList*"){
 					position = file.readLine().indexOf("Position: ", 0);
