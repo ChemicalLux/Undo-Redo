@@ -773,12 +773,15 @@ public class Word extends JFrame{
 		}
 	}
 	
-	public class keyEvent implements KeyListener{
-		public void keyPressed(KeyEvent e){
-			if(e.getKeyChar() == '.' || e.getKeyChar() == '?' || e.getKeyChar() == '!'){
-				
+	public abstract class keyEvent implements KeyListener{
+		public void keyPressed(KeyEvent ke){
+			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!'){
+				int startPos = text.getDocument().toString().indexOf(ke.getKeyChar(), 0);
+				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
+				startPos = text.getDocument().toString().length() + 1;
 			}
 		}
+		
 	}
 	//*************************** PRINT CLASS ************************
 		private class Print implements Printable
