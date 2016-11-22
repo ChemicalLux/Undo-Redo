@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public class Word extends JFrame{
-	//********************* Global vareabls **********************
+	//********************* Global variables **********************
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
@@ -38,8 +38,9 @@ public class Word extends JFrame{
 		private boolean saved_once=false;
 		private File Opened_file;
 		private File Saved_once;
+		private StringNodeArray node = new StringNodeArray();
 		
-	//******************* File & Edit & Format Menu vareabls ********************
+	//******************* File & Edit & Format Menu variables ********************
 		private JMenu file, edit, format, color, fonts;
 		private JMenuItem New, open, close, save, save_as, print, exit,
 						copy, cut, paste, replace, select_all, undo, redo, ao;
@@ -51,7 +52,7 @@ public class Word extends JFrame{
 		private JRadioButtonMenuItem color_item[], font_item[];
 		private JCheckBoxMenuItem bold, italic, under_line;
 		
-	//******************** Tool Bar vareabls ********************
+	//******************** Tool Bar variables ********************
 		private JToolBar tool=new JToolBar();
 		private ImageIcon new_icon= new ImageIcon("images/NEW.GIF");
 		private JButton new_button= new JButton(new_icon);
@@ -74,7 +75,7 @@ public class Word extends JFrame{
 		private ImageIcon option_icon= new ImageIcon("images/OPTION.png");
 		private JButton option_button= new JButton(option_icon);
 		
-	//******************** Font Bar vareabls ********************
+	//******************** Font Bar variables ********************
 		private JToolBar tool_font=new JToolBar();
 		private ImageIcon bold_icon= new ImageIcon("images/BLD.GIF");
 		private JToggleButton bold_button=new JToggleButton(new StyledEditorKit.BoldAction());
