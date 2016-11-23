@@ -105,7 +105,7 @@ public class StringNodeArray {
 	 * @param textArea
 	 * @return
 	 */
-	public boolean save(StringNodeArray List){
+	/*public boolean save(StringNodeArray List){
 		try{
 			RandomAccessFile file = new RandomAccessFile("undo-redo.dat","rw");
 			file.writeChars("*UndoList*");
@@ -124,7 +124,7 @@ public class StringNodeArray {
 		catch(Exception e){
 			return false;
 		}
-	}
+	}*/
 	/**
 	 * @author Eric Larocque
 	 * @param filename

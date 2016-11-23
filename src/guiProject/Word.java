@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Word extends JFrame{
 	//********************* Global variables **********************
-		private boolean isExecuted;
+		private boolean isExecuted = false;
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
 		private Container container;
@@ -517,6 +517,27 @@ public class Word extends JFrame{
 	//********************* OPEN_FILE Function **********************
 		public void OPEN_FILE()
 		{
+			try{
+				int dataPos;
+				int position;
+				RandomAccessFile file = new RandomAccessFile("undo-redo.dat", "r");
+				while(file.readLine() != null){
+					if(file.readLine() == "*UndoList*"){
+						position = file.readLine().indexOf("Position: ", 0);
+						dataPos = file.readLine().indexOf("Data: ", position);
+						undoList.addNode(Integer.parseInt(file.readLine().substring(position, dataPos)), file.readLine().substring(dataPos + 6, file.readLine().length()));
+					}
+					if(file.readLine() == "*RedoList*"){
+						position = file.readLine().indexOf("Position: ", 0);
+						dataPos = file.readLine().indexOf("Data: ", position);
+						redoList.addNode(Integer.parseInt(file.readLine().substring(position + 10, dataPos)), file.readLine().substring(dataPos + 6, file.readLine().length()));
+					}
+				}
+				
+				file.close();
+			}
+			catch(Exception E){
+			}
 			JFileChooser file_chooser=new JFileChooser(".");
 			file_chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int answer=file_chooser.showOpenDialog(null);
@@ -559,14 +580,14 @@ public class Word extends JFrame{
 			try{
 			RandomAccessFile file = new RandomAccessFile("undo-redo.dat","rw");
 			file.writeChars("*UndoList*");
-			for(int i = 0; i < undoList.length(); i++){
-				file.writeChars("\n");
-				file.writeChars(undoList.getNode(i));
+				for(int i = 0; i < undoList.length(); i++){
+					file.writeChars("\n");
+					file.writeChars(undoList.getNode(i));
 			}
 			file.writeChars("*RedoList*");
-			for(int k = 0; k < redoList.length(); k++){
-				file.writeChars("\n");
-				file.writeChars(redoList.getNode(k));
+				for(int k = 0; k < redoList.length(); k++){
+					file.writeChars("\n");
+					file.writeChars(redoList.getNode(k));
 			}
 			file.close();
 			}
@@ -820,8 +841,12 @@ public class Word extends JFrame{
 	
 	public abstract class keyEvent implements KeyListener{
 		public void keyPressed(KeyEvent ke){
-			int startPos = text.getDocument().toString().indexOf(ke.getKeyChar(), 0); 
 			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!' || ke.getKeyCode() == 13){
+				int startPos = 0;
+				if(isExecuted){
+					startPos = text.getDocument().toString().indexOf(ke.getKeyCode(), 0);
+					isExecuted = true;
+				}
 				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
 				startPos = text.getDocument().toString().length() + 1;
 			}
@@ -949,7 +974,7 @@ public class Word extends JFrame{
 				setLocation(200,200);
 				pack();
 				setResizable(false);
-			}//end constractor
+			}//end constructor
 			public void FIND_FIRST()
 			{
 				text.selectAll();
