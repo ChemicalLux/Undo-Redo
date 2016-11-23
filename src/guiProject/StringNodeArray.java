@@ -80,6 +80,10 @@ public class StringNodeArray {
 		
 	}
 	
+	public int length(){
+		return list.length;
+	}
+	
 	public String toString(){
 		
 		String fullList;
