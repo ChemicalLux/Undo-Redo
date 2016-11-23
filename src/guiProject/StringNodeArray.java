@@ -84,6 +84,15 @@ public class StringNodeArray {
 		return list.length;
 	}
 	
+	public String[] stringArray(){
+		int a = list.length;
+		String[] s = new String[a];
+		for(int i = 0; i > a; i++){
+			s[i] = list[i].getData();
+		}
+		return s;
+	}
+	
 	public String toString(){
 		
 		String fullList;
