@@ -84,6 +84,10 @@ public class StringNodeArray {
 		return list.length;
 	}
 	
+	public StringNode[] arrayString(){
+		return list;
+	}
+	
 	public String toString(){
 		
 		String fullList;
