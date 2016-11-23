@@ -13,6 +13,7 @@ import java.util.*;
 
 public class Word extends JFrame{
 	//********************* Global variables **********************
+		private boolean isExecuted;
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
 		private Container container;
