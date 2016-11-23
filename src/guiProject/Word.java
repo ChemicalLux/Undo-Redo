@@ -556,15 +556,15 @@ public class Word extends JFrame{
 		{
 			JFileChooser file_chooser=new JFileChooser();
 			file_chooser.setCurrentDirectory(new File("."));
-			/*try{
+			try{
 			RandomAccessFile file = new RandomAccessFile("undo-redo.dat","rw");
 			file.writeChars("*UndoList*");
-			for(int i = 0; i < undoList.length; i++){
+			for(int i = 0; i < undoList.length(); i++){
 				file.writeChars("\n");
 				file.writeChars(undoList.getNode(i));
 			}
 			file.writeChars("*RedoList*");
-			for(int k = 0; k < redoList.length; k++){
+			for(int k = 0; k < redoList.length(); k++){
 				file.writeChars("\n");
 				file.writeChars(redoList.getNode(k));
 			}
@@ -572,7 +572,7 @@ public class Word extends JFrame{
 			}
 			catch(Exception e){
 				
-			}*/
+			}
 			if(opened==true)
 			{
 				try
@@ -957,7 +957,7 @@ public class Word extends JFrame{
 				index=curOfSet=0;
 				index=all_text.indexOf(search_text.getText(), curOfSet);
 				curOfSet = index + search_text.getText().length();
-				if (index > -1) 
+				if (index > -1)
 					text.select(index,curOfSet);
 			}
 			public void FIND()
