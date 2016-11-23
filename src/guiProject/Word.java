@@ -22,8 +22,9 @@ public class Word extends JFrame{
 		private JPanel panel = new JPanel(new BorderLayout());
 		private RTFEditorKit rtfKit = new RTFEditorKit();
 		public FindReplaceDialog rplace_frame;
-		private JPanel optionMenu = new JPanel(flow);
+		private JPanel optionMenu = new JPanel();
 		private JPanel optMenu = new JPanel(flow);
+		private JPanel redoUndoMenu = new JPanel(flow);
 		
 		private String output="";
 		private String output_stream="";
@@ -76,7 +77,7 @@ public class Word extends JFrame{
 		private ImageIcon redo_icon = new ImageIcon("images/REDO.png");
 		private JButton redo_button = new JButton(redo_icon);
 		private ImageIcon option_icon = new ImageIcon("images/OPTION.png");
-		private JButton option_button = new JButton(option_icon);
+		private JToggleButton option_button = new JToggleButton(option_icon);
 		
 	//******************** Font Bar variables ********************
 		private JToolBar tool_font = new JToolBar();
@@ -97,8 +98,12 @@ public class Word extends JFrame{
 		private JToolBar option = new JToolBar();
 		private JToolBar option2 = new JToolBar();
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
-		private JButton redo_button1 = new JButton("Undo Text");
-		private JButton undo_button1 = new JButton("Redo Text");
+		private JButton redo_button1 = new JButton("Redo Text");
+		private JButton undo_button1 = new JButton("Undo Text");
+		private JList redo_List = new JList();
+		private JList undo_List = new JList();
+		JScrollPane redoScroller = new JScrollPane(redo_List);
+		JScrollPane undoScroller = new JScrollPane(undo_List);
 		
 	//********************* CONSTRACTOR SECTION *********************
 		public Word()
@@ -184,14 +189,14 @@ public class Word extends JFrame{
 			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
-			//===================== Copy Item =====================
+			//===================== Redo Item =====================
 			redo= new JMenuItem("Redo Text", undo_icon);
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
-			//===================== Copy Item =====================
+			//===================== Advanced Options Item =====================
 			ao= new JMenuItem("Advanced Options");
-			redo.setMnemonic('o');
-			redo.addActionListener(itemHandler);
+			ao.setMnemonic('o');
+			ao.addActionListener(itemHandler);
 		//================ Add Items To The Edit Menu ===============
 			edit= new JMenu("Edit");
 			edit.setMnemonic('E');
@@ -419,30 +424,36 @@ public class Word extends JFrame{
 			
 	//*********************** Option SECTION **********************		
 			selected.setMnemonic('s');
-			redo_button1.setToolTipText("Redo Text");
+			redo_button1.setToolTipText("Redo Text From Right Selection Box");
 			redo_button1.addActionListener(itemHandler);
-			undo_button1.setToolTipText("Undo Text");
+			undo_button1.setToolTipText("Undo Text From Left Selection Box");
 			undo_button1.addActionListener(itemHandler);
+			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			undo_List.setLayoutOrientation(JList.VERTICAL);
+			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			redo_List.setLayoutOrientation(JList.VERTICAL);
+			redoScroller.setPreferredSize(new Dimension(200,500));
+			undoScroller.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
-			option2.setLayout(flow);
+			option2.setLayout(new BoxLayout(option2, BoxLayout.LINE_AXIS));
 			option2.add(selected);
-			option2.addSeparator();
 			option2.setVisible(true);
 			option2.setEnabled(false);
-			option.setLayout(flow);
+			option.setLayout(new BoxLayout(option, BoxLayout.LINE_AXIS));
 			option.add(undo_button1);
 			option.add(redo_button1);
-			option.addSeparator();
 			option.setVisible(true);
 			option.setEnabled(false);
+			redoUndoMenu.add(undoScroller);
+			redoUndoMenu.add(redoScroller);
 	//*********************** Adding to Option Menu ***************
-			optMenu.setSize(200,200);
-			optMenu.add(option2,BorderLayout.NORTH);
-			optMenu.add(option, BorderLayout.SOUTH);
+			optionMenu.setLayout(new BoxLayout(optionMenu, BoxLayout.PAGE_AXIS));
 			optionMenu.setBorder(BorderFactory.createEtchedBorder());
-			optionMenu.add(optMenu,BorderLayout.NORTH);
-			optionMenu.setVisible(true);
-			optionMenu.setSize(200,400);
+			optionMenu.add(option2);
+			optionMenu.add(option);
+			optionMenu.add(redoUndoMenu);
+			optionMenu.setVisible(false);
+			optionMenu.setSize(400,400);
 	//******************* Main GUI *******************************
 			SetDisable_JTextPane();
 			container=getContentPane();
@@ -780,7 +791,12 @@ public class Word extends JFrame{
 			if(event.getSource()==under_line_button)
 			{}
 			if(event.getSource()==option_button){
-				optMenu.setVisible(true);
+				if(option_button.isSelected()){
+					optionMenu.setVisible(true);
+				}
+				else{
+					optionMenu.setVisible(false);
+				}
 			}
 			for(int k=0;k<font_names.length;k++)
 				if(font_item[k].isSelected())
