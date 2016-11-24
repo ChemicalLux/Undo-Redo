@@ -16,6 +16,8 @@ public class Word extends JFrame{
 		private boolean isExecuted;
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
+		private String[] undoArray;
+		private String[] redoArray;
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
@@ -101,8 +103,8 @@ public class Word extends JFrame{
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
 		private JButton redo_button1 = new JButton("Redo Text");
 		private JButton undo_button1 = new JButton("Undo Text");
-		private JList redo_List = new JList();
-		private JList undo_List = new JList();
+		private JList redo_List = new JList(redoArray);
+		private JList undo_List = new JList(undoArray);
 		JScrollPane redoScroller = new JScrollPane(redo_List);
 		JScrollPane undoScroller = new JScrollPane(undo_List);
 		
@@ -423,12 +425,14 @@ public class Word extends JFrame{
 				}
 			});
 			
-	//*********************** Option SECTION **********************		
+	//*********************** Option SECTION **********************	
 			selected.setMnemonic('s');
 			redo_button1.setToolTipText("Redo Text From Right Selection Box");
 			redo_button1.addActionListener(itemHandler);
+			redo_button1.setPreferredSize(new Dimension(200,50));
 			undo_button1.setToolTipText("Undo Text From Left Selection Box");
 			undo_button1.addActionListener(itemHandler);
+			undo_button1.setPreferredSize(new Dimension(200,50));
 			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			undo_List.setLayoutOrientation(JList.VERTICAL);
 			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -440,7 +444,8 @@ public class Word extends JFrame{
 			option2.add(selected);
 			option2.setVisible(true);
 			option2.setEnabled(false);
-			option.setLayout(new BoxLayout(option, BoxLayout.LINE_AXIS));
+			option.setLayout(new GridLayout(1,2));
+			option.setPreferredSize(new Dimension(400,50));
 			option.add(undo_button1);
 			option.add(redo_button1);
 			option.setVisible(true);
@@ -746,6 +751,14 @@ public class Word extends JFrame{
 			text.setBackground(Color.gray);
 			text.setEditable(false);
 		}
+	//********************* Undo Function *************************
+		public void undo(){
+			
+		}
+	//********************* Redo Function *************************
+		public void redo(){
+			
+		}	
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
 	{
@@ -783,6 +796,10 @@ public class Word extends JFrame{
 				rplace_frame=new FindReplaceDialog(Word.this);
 				rplace_frame.setVisible(true);
 			}
+			if(event.getSource()==undo_button|| event.getSource()==undo|| event.getSource()== undo_button1)
+				undo();
+			if(event.getSource()==redo_button|| event.getSource()==redo|| event.getSource()== redo_button1)
+				redo();
 			if(event.getSource()==select_all)
 				text.selectAll();
 			if(event.getSource()==bold_button)
@@ -824,6 +841,7 @@ public class Word extends JFrame{
 			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!' || ke.getKeyCode() == 13){
 				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
 				startPos = text.getDocument().toString().length() + 1;
+				undoArray = undoList.stringArray();
 			}
 		}
 	}
