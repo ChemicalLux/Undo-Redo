@@ -797,20 +797,33 @@ public class Word extends JFrame{
 			index = all_text.indexOf(s, curOfSet);
 			curOfSet = index + s.length();
 			if(!selected.isSelected()){
-				text.select(0, index + curOfSet);
+				if (index > -1)
+					text.select(0,index + curOfSet);
+				else
+				{
+					text.selectAll();
+					all_text=text.getSelectedText();
+					index=curOfSet=0;
+					index = all_text.indexOf(s, curOfSet);
+					curOfSet = index + s.length();
+					if (index > -1)
+						text.select(0, index+curOfSet);
+				}
 			}
-			if (index > -1)
-				text.select(index,curOfSet);
-			else
-			{
-				text.selectAll();
-				all_text=text.getSelectedText();
-				index=curOfSet=0;
-				index = all_text.indexOf(s, curOfSet);
-				curOfSet = index + s.length();
+			else{
 				if (index > -1)
 					text.select(index,curOfSet);
-			}
+				else
+				{
+					text.selectAll();
+					all_text=text.getSelectedText();
+					index=curOfSet=0;
+					index = all_text.indexOf(s, curOfSet);
+					curOfSet = index + s.length();
+					if (index > -1)
+						text.select(index,curOfSet);
+				}
+			}	
 		}
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
