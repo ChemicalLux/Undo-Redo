@@ -16,8 +16,8 @@ public class Word extends JFrame{
 		private boolean isExecuted = false;
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
-		private String[] undoArray;
-		private String[] redoArray;
+		private String[] undoArray = new String[1];
+		private String[] redoArray = new String[1];
 		private ListSelectionModel listSelectionModel;
 		private ListSelectionModel listSelectionModel1;
 		
@@ -488,7 +488,7 @@ public class Word extends JFrame{
 	//********************* MAIN FUNCTION SECTION *******************
 		public static void main(String []args)
 		{
-			Word w=new Word();
+			Word w = new Word();
 			w.setVisible(true);
 			w.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			w.setResizable(true);
@@ -787,6 +787,31 @@ public class Word extends JFrame{
 		public void redo(){
 			
 		}	
+	//********************* Find Function for Highlighting *************************	
+		public void FINDHIGHLIGHT(String s){
+			int index = 0;
+			int curOfSet = 0;
+			text.selectAll();
+			String all_text=text.getSelectedText();
+			index=text.getCaretPosition();
+			index = all_text.indexOf(s, curOfSet);
+			curOfSet = index + s.length();
+			if(!selected.isSelected()){
+				text.select(0, index + curOfSet);
+			}
+			if (index > -1)
+				text.select(index,curOfSet);
+			else
+			{
+				text.selectAll();
+				all_text=text.getSelectedText();
+				index=curOfSet=0;
+				index = all_text.indexOf(s, curOfSet);
+				curOfSet = index + s.length();
+				if (index > -1)
+					text.select(index,curOfSet);
+			}
+		}
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
 	{
@@ -881,13 +906,13 @@ public class Word extends JFrame{
 	public class listSelection implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent e) {
 			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-			int first = e.getFirstIndex();
-			int last = e.getLastIndex();
 			if(lsm == listSelectionModel){//undo selection
-				
+				int i = lsm.getSelectionMode();
+				FINDHIGHLIGHT(undoArray[i]);
 			}
 			else{//redo selection
-				
+				int i = lsm.getSelectionMode();
+				FINDHIGHLIGHT(redoArray[i]);
 			}
 		}
 	}
@@ -947,7 +972,7 @@ public class Word extends JFrame{
 			}
 		}
 	//************************ FIND & REPLACE CLASS *****************
-		public class FindReplaceDialog extends JDialog 
+		private class FindReplaceDialog extends JDialog 
 		{
 			private int index=0;
 			private int curOfSet=0;
