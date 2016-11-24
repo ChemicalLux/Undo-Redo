@@ -196,7 +196,7 @@ public class Word extends JFrame{
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
 			//===================== Redo Item =====================
-			redo= new JMenuItem("Redo Text", undo_icon);
+			redo= new JMenuItem("Redo Text", redo_icon);
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
 			//===================== Advanced Options Item =====================
