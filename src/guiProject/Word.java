@@ -101,8 +101,8 @@ public class Word extends JFrame{
 		private JComboBox font_size = new JComboBox(font_sizes);
 		
 	//******************** Option Menu variables ********************
-		private JToolBar option = new JToolBar();
-		private JToolBar option2 = new JToolBar();
+		private JPanel option = new JPanel();
+		private JPanel option2 = new JPanel();
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
 		private JButton redo_button1 = new JButton("Redo Text");
 		private JButton undo_button1 = new JButton("Undo Text");
