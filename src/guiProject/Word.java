@@ -781,11 +781,31 @@ public class Word extends JFrame{
 		}
 	//********************* Undo Function *************************
 		public void undo(){
-			
+			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
+				if(selected.isSelected()){//selected undo
+					
+				}
+				else{
+					
+				}
+			}
+			else{
+				
+			}
 		}
 	//********************* Redo Function *************************
 		public void redo(){
-			
+			if(!redo_List.isSelectionEmpty()){//checks if there is a selection
+				if(selected.isSelected()){//selected redo
+					
+				}
+				else{
+					
+				}
+			}
+			else{
+				
+			}
 		}	
 	//********************* Find Function for Highlighting *************************	
 		public void FINDHIGHLIGHT(String s){
@@ -919,7 +939,8 @@ public class Word extends JFrame{
 	public class listSelection implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent e) {
 			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-			if(lsm == listSelectionModel){//undo selection
+			if(lsm.isSelectionEmpty()){}
+			else if(lsm == listSelectionModel){//undo selection
 				int i = lsm.getSelectionMode();
 				FINDHIGHLIGHT(undoArray[i]);
 			}
