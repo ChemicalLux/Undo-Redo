@@ -18,6 +18,9 @@ public class Word extends JFrame{
 		private StringNodeArray redoList = new StringNodeArray();
 		private String[] undoArray;
 		private String[] redoArray;
+		private ListSelectionModel listSelectionModel;
+		private ListSelectionModel listSelectionModel1;
+		
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
@@ -435,8 +438,12 @@ public class Word extends JFrame{
 			undo_button1.setPreferredSize(new Dimension(200,50));
 			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			undo_List.setLayoutOrientation(JList.VERTICAL);
+			listSelectionModel = undo_List.getSelectionModel();
+			undo_List.addListSelectionListener(new listSelection());
 			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			redo_List.setLayoutOrientation(JList.VERTICAL);
+			listSelectionModel1 = redo_List.getSelectionModel();
+			redo_List.addListSelectionListener(new listSelection());
 			redoScroller.setPreferredSize(new Dimension(200,500));
 			undoScroller.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
@@ -870,6 +877,20 @@ public class Word extends JFrame{
 			}
 		}
 	}
+	
+	public class listSelection implements ListSelectionListener{
+		public void valueChanged(ListSelectionEvent e) {
+			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+			int first = e.getFirstIndex();
+			int last = e.getLastIndex();
+			if(lsm == listSelectionModel){//undo selection
+				
+			}
+			else{//redo selection
+				
+			}
+		}
+	}
 	//*************************** PRINT CLASS ************************
 		private class Print implements Printable
 		{
@@ -926,7 +947,7 @@ public class Word extends JFrame{
 			}
 		}
 	//************************ FIND & REPLACE CLASS *****************
-		private class FindReplaceDialog extends JDialog 
+		public class FindReplaceDialog extends JDialog 
 		{
 			private int index=0;
 			private int curOfSet=0;
