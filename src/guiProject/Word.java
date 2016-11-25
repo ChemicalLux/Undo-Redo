@@ -62,10 +62,10 @@ public class Word extends JFrame{
 	//******************* File & Edit & Format Menu variables ********************
 		private JMenu file, edit, format, color, fonts;
 		private JMenuItem New, open, close, save, save_as, print, exit,
-						copy, cut, paste, replace, select_all, undo, redo, ao;
+						copy, cut, paste, replace, select_all, undo, redo;
 		private ButtonGroup font_group;
 		private ButtonGroup color_group;
-		private String color_name[]={"Black","Green","Blue","Red","Yellow"};
+		private String color_name[]={"Black","Green","Blou","Red","Yellow"};
 		private Color color_value[]={Color.black, Color.green, Color.blue,
 									Color.red, Color.yellow};
 		private JRadioButtonMenuItem color_item[], font_item[];
@@ -214,11 +214,11 @@ public class Word extends JFrame{
 			
 	//********************* EDIT MENU SECTION ***********************
 		//===================== Cut Item ======================
-			cut= new JMenuItem("Cut", cut_icon);
+			cut= new JMenuItem("Cut");
 			cut.setMnemonic('t');
 			cut.addActionListener(itemHandler);
 		//===================== Copy Item =====================
-			copy= new JMenuItem("Copy", copy_icon);
+			copy= new JMenuItem("Copy");
 			copy.setMnemonic('C');
 			copy.addActionListener(itemHandler);
 		//===================== Replace Item ==================
@@ -226,7 +226,7 @@ public class Word extends JFrame{
 			replace.setMnemonic('e');
 			replace.addActionListener(itemHandler);
 		//===================== Paste Item ====================
-			paste= new JMenuItem("Paste", paste_icon);
+			paste= new JMenuItem("Paste");
 			paste.setMnemonic('P');
 			paste.addActionListener(itemHandler);
 		//===================== Select All Item ===============
@@ -234,6 +234,7 @@ public class Word extends JFrame{
 			select_all.setMnemonic('l');
 			select_all.addActionListener(itemHandler);
 			//===================== UNDO Item =====================
+<<<<<<< HEAD
 			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
@@ -245,6 +246,15 @@ public class Word extends JFrame{
 			ao= new JMenuItem("Advanced Options");
 			ao.setMnemonic('o');
 			ao.addActionListener(itemHandler);
+=======
+			undo= new JMenuItem("Undo");
+			undo.setMnemonic('u');
+			undo.addActionListener(itemHandler);
+			//===================== Copy Item =====================
+			redo= new JMenuItem("Redo");
+			redo.setMnemonic('q');
+			redo.addActionListener(itemHandler);
+>>>>>>> parent of 56ad72d... ui and menu tweaks
 		//================ Add Items To The Edit Menu ===============
 			edit= new JMenu("Edit");
 			edit.setMnemonic('E');
@@ -252,10 +262,8 @@ public class Word extends JFrame{
 			edit.add(copy);
 			edit.add(replace);
 			edit.add(paste);
-			edit.addSeparator();
 			edit.add(undo);
 			edit.add(redo);
-			edit.add(ao);
 			edit.addSeparator();
 			edit.add(select_all);
 			
