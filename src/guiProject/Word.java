@@ -235,6 +235,7 @@ public class Word extends JFrame{
 			select_all.addActionListener(itemHandler);
 			//===================== UNDO Item =====================
 <<<<<<< HEAD
+<<<<<<< HEAD
 			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
@@ -246,6 +247,15 @@ public class Word extends JFrame{
 			ao= new JMenuItem("Advanced Options");
 			ao.setMnemonic('o');
 			ao.addActionListener(itemHandler);
+=======
+			undo= new JMenuItem("Undo");
+			undo.setMnemonic('u');
+			undo.addActionListener(itemHandler);
+			//===================== Copy Item =====================
+			redo= new JMenuItem("Redo");
+			redo.setMnemonic('q');
+			redo.addActionListener(itemHandler);
+>>>>>>> parent of 56ad72d... ui and menu tweaks
 =======
 			undo= new JMenuItem("Undo");
 			undo.setMnemonic('u');
