@@ -13,22 +13,17 @@ import java.util.*;
 
 public class Word extends JFrame{
 	//********************* Global variables **********************
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
->>>>>>> 1fd4f733a4d77c45bf74ea5668d32aeef56215e9
-=======
+
 		private boolean isExecuted = false;
-		private StringNodeArray undoList = new StringNodeArray();
-		private StringNodeArray redoList = new StringNodeArray();
+
 		private String[] undoArray = new String[1];
 		private String[] redoArray = new String[1];
 		private ListSelectionModel listSelectionModel;
 		private ListSelectionModel listSelectionModel1;
 		
->>>>>>> cc22982bde9f1799126345fe8813ad526cf8f1ac
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
@@ -72,7 +67,6 @@ public class Word extends JFrame{
 		private JCheckBoxMenuItem bold, italic, under_line;
 		
 	//******************** Tool Bar variables ********************
-<<<<<<< HEAD
 		private JToolBar tool=new JToolBar();
 		private ImageIcon new_icon= new ImageIcon("images/NEW.GIF");
 		private JButton new_button= new JButton(new_icon);
@@ -103,38 +97,9 @@ public class Word extends JFrame{
 		private JToggleButton italic_button=new JToggleButton(new StyledEditorKit.ItalicAction());
 		private ImageIcon under_line_icon= new ImageIcon("images/UNDRLN.GIF");
 		private JToggleButton under_line_button=new JToggleButton(new StyledEditorKit.UnderlineAction());
-=======
-		private JToolBar tool = new JToolBar();
-		private ImageIcon new_icon = new ImageIcon("images/NEW.GIF");
-		private JButton new_button = new JButton(new_icon);
-		private ImageIcon open_icon = new ImageIcon("images/OPEN.GIF");
-		private JButton open_button = new JButton(open_icon);
-		private ImageIcon save_icon = new ImageIcon("images/SAVE.GIF");
-		private JButton save_button = new JButton(save_icon);
-		private ImageIcon print_icon = new ImageIcon("images/PRINT.GIF");
-		private JButton print_button = new JButton(print_icon);
-		private ImageIcon cut_icon = new ImageIcon("images/CUT.GIF");
-		private JButton cut_button = new JButton(cut_icon);
-		private ImageIcon copy_icon = new ImageIcon("images/COPY.GIF");
-		private JButton copy_button = new JButton(copy_icon);
-		private ImageIcon paste_icon = new ImageIcon("images/PASTE.GIF");
-		private JButton paste_button = new JButton(paste_icon);
-		private ImageIcon undo_icon = new ImageIcon("images/UNDO.png");
-		private JButton undo_button = new JButton(undo_icon);
-		private ImageIcon redo_icon = new ImageIcon("images/REDO.png");
-		private JButton redo_button = new JButton(redo_icon);
-		private ImageIcon option_icon = new ImageIcon("images/OPTION.png");
-		private JToggleButton option_button = new JToggleButton(option_icon);
 		
 	//******************** Font Bar variables ********************
-		private JToolBar tool_font = new JToolBar();
-		private ImageIcon bold_icon = new ImageIcon("images/BLD.GIF");
-		private JToggleButton bold_button = new JToggleButton(new StyledEditorKit.BoldAction());
-		private ImageIcon italic_icon = new ImageIcon("images/ITL.GIF");
-		private JToggleButton italic_button = new JToggleButton(new StyledEditorKit.ItalicAction());
-		private ImageIcon under_line_icon = new ImageIcon("images/UNDRLN.GIF");
-		private JToggleButton under_line_button = new JToggleButton(new StyledEditorKit.UnderlineAction());
->>>>>>> 1fd4f733a4d77c45bf74ea5668d32aeef56215e9
+
 		private String font_names[]={"Monospaced","Times New Roman","Courier","Tahoma","MS Serif",
 				"Andalus","Monotype Koufi","Simplified Arabic"};
 		private String font_sizes[]={"10","12","14","16","18","20","22","24","26",
@@ -234,8 +199,7 @@ public class Word extends JFrame{
 			select_all.setMnemonic('l');
 			select_all.addActionListener(itemHandler);
 			//===================== UNDO Item =====================
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
@@ -244,10 +208,9 @@ public class Word extends JFrame{
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
 			//===================== Advanced Options Item =====================
-			ao= new JMenuItem("Advanced Options");
+			JMenuItem ao = new JMenuItem("Advanced Options");
 			ao.setMnemonic('o');
 			ao.addActionListener(itemHandler);
-=======
 			undo= new JMenuItem("Undo");
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
@@ -255,8 +218,7 @@ public class Word extends JFrame{
 			redo= new JMenuItem("Redo");
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
->>>>>>> parent of 56ad72d... ui and menu tweaks
-=======
+
 			undo= new JMenuItem("Undo");
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
@@ -264,7 +226,6 @@ public class Word extends JFrame{
 			redo= new JMenuItem("Redo");
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
->>>>>>> parent of 56ad72d... ui and menu tweaks
 		//================ Add Items To The Edit Menu ===============
 			edit= new JMenu("Edit");
 			edit.setMnemonic('E');
