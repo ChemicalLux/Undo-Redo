@@ -87,7 +87,7 @@ public class Word extends JFrame{
 		private ImageIcon redo_icon= new ImageIcon("images/REDO.png");
 		private JButton redo_button= new JButton(redo_icon);
 		private ImageIcon option_icon= new ImageIcon("images/OPTION.png");
-		private JButton option_button= new JButton(option_icon);
+		private JToggleButton option_button= new JToggleButton(option_icon);
 		
 	//******************** Font Bar variables ********************
 		private JToolBar tool_font=new JToolBar();
@@ -199,7 +199,6 @@ public class Word extends JFrame{
 			select_all.setMnemonic('l');
 			select_all.addActionListener(itemHandler);
 			//===================== UNDO Item =====================
-
 			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
