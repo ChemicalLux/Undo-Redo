@@ -14,10 +14,21 @@ import java.util.*;
 public class Word extends JFrame{
 	//********************* Global variables **********************
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
 >>>>>>> 1fd4f733a4d77c45bf74ea5668d32aeef56215e9
+=======
+		private boolean isExecuted = false;
+		private StringNodeArray undoList = new StringNodeArray();
+		private StringNodeArray redoList = new StringNodeArray();
+		private String[] undoArray = new String[1];
+		private String[] redoArray = new String[1];
+		private ListSelectionModel listSelectionModel;
+		private ListSelectionModel listSelectionModel1;
+		
+>>>>>>> cc22982bde9f1799126345fe8813ad526cf8f1ac
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
@@ -25,8 +36,9 @@ public class Word extends JFrame{
 		private JPanel panel = new JPanel(new BorderLayout());
 		private RTFEditorKit rtfKit = new RTFEditorKit();
 		public FindReplaceDialog rplace_frame;
-		private JPanel optionMenu = new JPanel(flow);
+		private JPanel optionMenu = new JPanel();
 		private JPanel optMenu = new JPanel(flow);
+		private JPanel redoUndoMenu = new JPanel(flow);
 		
 		private String output="";
 		private String output_stream="";
@@ -112,7 +124,7 @@ public class Word extends JFrame{
 		private ImageIcon redo_icon = new ImageIcon("images/REDO.png");
 		private JButton redo_button = new JButton(redo_icon);
 		private ImageIcon option_icon = new ImageIcon("images/OPTION.png");
-		private JButton option_button = new JButton(option_icon);
+		private JToggleButton option_button = new JToggleButton(option_icon);
 		
 	//******************** Font Bar variables ********************
 		private JToolBar tool_font = new JToolBar();
@@ -131,11 +143,15 @@ public class Word extends JFrame{
 		private JComboBox font_size = new JComboBox(font_sizes);
 		
 	//******************** Option Menu variables ********************
-		private JToolBar option = new JToolBar();
-		private JToolBar option2 = new JToolBar();
+		private JPanel option = new JPanel();
+		private JPanel option2 = new JPanel();
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
-		private JButton redo_button1 = new JButton("Undo Text");
-		private JButton undo_button1 = new JButton("Redo Text");
+		private JButton redo_button1 = new JButton("Redo Text");
+		private JButton undo_button1 = new JButton("Undo Text");
+		private JList redo_List = new JList(redoArray);
+		private JList undo_List = new JList(undoArray);
+		JScrollPane redoScroller = new JScrollPane(redo_List);
+		JScrollPane undoScroller = new JScrollPane(undo_List);
 		
 	//********************* CONSTRACTOR SECTION *********************
 		public Word()
@@ -221,14 +237,14 @@ public class Word extends JFrame{
 			undo= new JMenuItem("Undo Text", undo_icon);
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
-			//===================== Copy Item =====================
-			redo= new JMenuItem("Redo Text", undo_icon);
+			//===================== Redo Item =====================
+			redo= new JMenuItem("Redo Text", redo_icon);
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
-			//===================== Copy Item =====================
+			//===================== Advanced Options Item =====================
 			ao= new JMenuItem("Advanced Options");
-			redo.setMnemonic('o');
-			redo.addActionListener(itemHandler);
+			ao.setMnemonic('o');
+			ao.addActionListener(itemHandler);
 		//================ Add Items To The Edit Menu ===============
 			edit= new JMenu("Edit");
 			edit.setMnemonic('E');
@@ -454,32 +470,45 @@ public class Word extends JFrame{
 				}
 			});
 			
-	//*********************** Option SECTION **********************		
+	//*********************** Option SECTION **********************	
 			selected.setMnemonic('s');
-			redo_button1.setToolTipText("Redo Text");
+			redo_button1.setToolTipText("Redo Text From Right Selection Box");
 			redo_button1.addActionListener(itemHandler);
-			undo_button1.setToolTipText("Undo Text");
+			redo_button1.setPreferredSize(new Dimension(200,50));
+			undo_button1.setToolTipText("Undo Text From Left Selection Box");
 			undo_button1.addActionListener(itemHandler);
+			undo_button1.setPreferredSize(new Dimension(200,50));
+			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			undo_List.setLayoutOrientation(JList.VERTICAL);
+			listSelectionModel = undo_List.getSelectionModel();
+			undo_List.addListSelectionListener(new listSelection());
+			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			redo_List.setLayoutOrientation(JList.VERTICAL);
+			listSelectionModel1 = redo_List.getSelectionModel();
+			redo_List.addListSelectionListener(new listSelection());
+			redoScroller.setPreferredSize(new Dimension(200,500));
+			undoScroller.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
-			option2.setLayout(flow);
+			option2.setLayout(new BoxLayout(option2, BoxLayout.LINE_AXIS));
 			option2.add(selected);
-			option2.addSeparator();
 			option2.setVisible(true);
 			option2.setEnabled(false);
-			option.setLayout(flow);
+			option.setLayout(new GridLayout(1,2));
+			option.setPreferredSize(new Dimension(400,50));
 			option.add(undo_button1);
 			option.add(redo_button1);
-			option.addSeparator();
 			option.setVisible(true);
 			option.setEnabled(false);
+			redoUndoMenu.add(undoScroller);
+			redoUndoMenu.add(redoScroller);
 	//*********************** Adding to Option Menu ***************
-			optMenu.setSize(200,200);
-			optMenu.add(option2,BorderLayout.NORTH);
-			optMenu.add(option, BorderLayout.SOUTH);
+			optionMenu.setLayout(new BoxLayout(optionMenu, BoxLayout.PAGE_AXIS));
 			optionMenu.setBorder(BorderFactory.createEtchedBorder());
-			optionMenu.add(optMenu,BorderLayout.NORTH);
-			optionMenu.setVisible(true);
-			optionMenu.setSize(200,400);
+			optionMenu.add(option2);
+			optionMenu.add(option);
+			optionMenu.add(redoUndoMenu);
+			optionMenu.setVisible(false);
+			optionMenu.setSize(400,400);
 	//******************* Main GUI *******************************
 			SetDisable_JTextPane();
 			container=getContentPane();
@@ -501,7 +530,7 @@ public class Word extends JFrame{
 	//********************* MAIN FUNCTION SECTION *******************
 		public static void main(String []args)
 		{
-			Word w=new Word();
+			Word w = new Word();
 			w.setVisible(true);
 			w.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			w.setResizable(true);
@@ -542,6 +571,27 @@ public class Word extends JFrame{
 	//********************* OPEN_FILE Function **********************
 		public void OPEN_FILE()
 		{
+			try{
+				int dataPos;
+				int position;
+				RandomAccessFile file = new RandomAccessFile("undo-redo.dat", "r");
+				while(file.readLine() != null){
+					if(file.readLine() == "*UndoList*"){
+						position = file.readLine().indexOf("Position: ", 0);
+						dataPos = file.readLine().indexOf("Data: ", position);
+						undoList.addNode(Integer.parseInt(file.readLine().substring(position, dataPos)), file.readLine().substring(dataPos + 6, file.readLine().length()));
+					}
+					if(file.readLine() == "*RedoList*"){
+						position = file.readLine().indexOf("Position: ", 0);
+						dataPos = file.readLine().indexOf("Data: ", position);
+						redoList.addNode(Integer.parseInt(file.readLine().substring(position + 10, dataPos)), file.readLine().substring(dataPos + 6, file.readLine().length()));
+					}
+				}
+				
+				file.close();
+			}
+			catch(Exception E){
+			}
 			JFileChooser file_chooser=new JFileChooser(".");
 			file_chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int answer=file_chooser.showOpenDialog(null);
@@ -584,14 +634,14 @@ public class Word extends JFrame{
 			try{
 			RandomAccessFile file = new RandomAccessFile("undo-redo.dat","rw");
 			file.writeChars("*UndoList*");
-			for(int i = 0; i < undoList.length; i++){
-				file.writeChars("\n");
-				file.writeChars(undoList.getNode(i));
+				for(int i = 0; i < undoList.length(); i++){
+					file.writeChars("\n");
+					file.writeChars(undoList.getNode(i));
 			}
 			file.writeChars("*RedoList*");
-			for(int k = 0; k < redoList.; k++){
-				file.writeChars("\n");
-				file.writeChars(redoList.getNode(k));
+				for(int k = 0; k < redoList.length(); k++){
+					file.writeChars("\n");
+					file.writeChars(redoList.getNode(k));
 			}
 			file.close();
 			}
@@ -771,6 +821,72 @@ public class Word extends JFrame{
 			text.setBackground(Color.gray);
 			text.setEditable(false);
 		}
+	//********************* Undo Function *************************
+		public void undo(){
+			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
+				if(selected.isSelected()){//selected undo
+					
+				}
+				else{
+					
+				}
+			}
+			else{
+				
+			}
+		}
+	//********************* Redo Function *************************
+		public void redo(){
+			if(!redo_List.isSelectionEmpty()){//checks if there is a selection
+				if(selected.isSelected()){//selected redo
+					
+				}
+				else{
+					
+				}
+			}
+			else{
+				
+			}
+		}	
+	//********************* Find Function for Highlighting *************************	
+		public void FINDHIGHLIGHT(String s){
+			int index = 0;
+			int curOfSet = 0;
+			text.selectAll();
+			String all_text=text.getSelectedText();
+			index=text.getCaretPosition();
+			index = all_text.indexOf(s, curOfSet);
+			curOfSet = index + s.length();
+			if(!selected.isSelected()){
+				if (index > -1)
+					text.select(0,index + curOfSet);
+				else
+				{
+					text.selectAll();
+					all_text=text.getSelectedText();
+					index=curOfSet=0;
+					index = all_text.indexOf(s, curOfSet);
+					curOfSet = index + s.length();
+					if (index > -1)
+						text.select(0, index+curOfSet);
+				}
+			}
+			else{
+				if (index > -1)
+					text.select(index,curOfSet);
+				else
+				{
+					text.selectAll();
+					all_text=text.getSelectedText();
+					index=curOfSet=0;
+					index = all_text.indexOf(s, curOfSet);
+					curOfSet = index + s.length();
+					if (index > -1)
+						text.select(index,curOfSet);
+				}
+			}	
+		}
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
 	{
@@ -808,6 +924,10 @@ public class Word extends JFrame{
 				rplace_frame=new FindReplaceDialog(Word.this);
 				rplace_frame.setVisible(true);
 			}
+			if(event.getSource()==undo_button|| event.getSource()==undo|| event.getSource()== undo_button1)
+				undo();
+			if(event.getSource()==redo_button|| event.getSource()==redo|| event.getSource()== redo_button1)
+				redo();
 			if(event.getSource()==select_all)
 				text.selectAll();
 			if(event.getSource()==bold_button)
@@ -817,7 +937,12 @@ public class Word extends JFrame{
 			if(event.getSource()==under_line_button)
 			{}
 			if(event.getSource()==option_button){
-				optMenu.setVisible(true);
+				if(option_button.isSelected()){
+					optionMenu.setVisible(true);
+				}
+				else{
+					optionMenu.setVisible(false);
+				}
 			}
 			for(int k=0;k<font_names.length;k++)
 				if(font_item[k].isSelected())
@@ -840,10 +965,30 @@ public class Word extends JFrame{
 	
 	public abstract class keyEvent implements KeyListener{
 		public void keyPressed(KeyEvent ke){
-			int startPos = text.getDocument().toString().indexOf(ke.getKeyChar(), 0); 
 			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!' || ke.getKeyCode() == 13){
+				int startPos = 0;
+				if(isExecuted){
+					startPos = text.getDocument().toString().indexOf(ke.getKeyCode(), 0);
+					isExecuted = true;
+				}
 				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
 				startPos = text.getDocument().toString().length() + 1;
+				undoArray = undoList.stringArray();
+			}
+		}
+	}
+	
+	public class listSelection implements ListSelectionListener{
+		public void valueChanged(ListSelectionEvent e) {
+			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+			if(lsm.isSelectionEmpty()){}
+			else if(lsm == listSelectionModel){//undo selection
+				int i = lsm.getSelectionMode();
+				FINDHIGHLIGHT(undoArray[i]);
+			}
+			else{//redo selection
+				int i = lsm.getSelectionMode();
+				FINDHIGHLIGHT(redoArray[i]);
 			}
 		}
 	}
@@ -969,7 +1114,7 @@ public class Word extends JFrame{
 				setLocation(200,200);
 				pack();
 				setResizable(false);
-			}//end constractor
+			}//end constructor
 			public void FIND_FIRST()
 			{
 				text.selectAll();
@@ -977,7 +1122,7 @@ public class Word extends JFrame{
 				index=curOfSet=0;
 				index=all_text.indexOf(search_text.getText(), curOfSet);
 				curOfSet = index + search_text.getText().length();
-				if (index > -1) 
+				if (index > -1)
 					text.select(index,curOfSet);
 			}
 			public void FIND()
