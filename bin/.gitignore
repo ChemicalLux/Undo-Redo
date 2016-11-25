@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /BLD.GIF
 /COPY.GIF
 /CUT.GIF
@@ -13,3 +14,9 @@
 /UNDO.png
 /UNDRLN.GIF
 /guiProject/
+=======
+/guiProject/
+/OPTION.png
+/REDO.png
+/UNDO.png
+>>>>>>> 1fd4f733a4d77c45bf74ea5668d32aeef56215e9
