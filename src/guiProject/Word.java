@@ -13,9 +13,17 @@ import java.util.*;
 
 public class Word extends JFrame{
 	//********************* Global variables **********************
-		private boolean isExecuted = false;
+
 		private StringNodeArray undoList = new StringNodeArray();
 		private StringNodeArray redoList = new StringNodeArray();
+
+		private boolean isExecuted = false;
+
+		private String[] undoArray = new String[1];
+		private String[] redoArray = new String[1];
+		private ListSelectionModel listSelectionModel;
+		private ListSelectionModel listSelectionModel1;
+		
 		private Container container;
 		private JTextPane text;
 		private JMenuBar menu;
@@ -44,50 +52,54 @@ public class Word extends JFrame{
 		private boolean saved_once=false;
 		private File Opened_file;
 		private File Saved_once;
+		private StringNodeArray node = new StringNodeArray();
 		
 	//******************* File & Edit & Format Menu variables ********************
 		private JMenu file, edit, format, color, fonts;
 		private JMenuItem New, open, close, save, save_as, print, exit,
-						copy, cut, paste, replace, select_all, undo, redo, ao;
+						copy, cut, paste, replace, select_all, undo, redo;
 		private ButtonGroup font_group;
 		private ButtonGroup color_group;
-		private String color_name[]={"Black","Green","Blue","Red","Yellow"};
+		private String color_name[]={"Black","Green","Blou","Red","Yellow"};
 		private Color color_value[]={Color.black, Color.green, Color.blue,
 									Color.red, Color.yellow};
 		private JRadioButtonMenuItem color_item[], font_item[];
 		private JCheckBoxMenuItem bold, italic, under_line;
 		
 	//******************** Tool Bar variables ********************
-		private JToolBar tool = new JToolBar();
-		private ImageIcon new_icon = new ImageIcon("images/NEW.GIF");
-		private JButton new_button = new JButton(new_icon);
-		private ImageIcon open_icon = new ImageIcon("images/OPEN.GIF");
-		private JButton open_button = new JButton(open_icon);
-		private ImageIcon save_icon = new ImageIcon("images/SAVE.GIF");
-		private JButton save_button = new JButton(save_icon);
-		private ImageIcon print_icon = new ImageIcon("images/PRINT.GIF");
-		private JButton print_button = new JButton(print_icon);
-		private ImageIcon cut_icon = new ImageIcon("images/CUT.GIF");
-		private JButton cut_button = new JButton(cut_icon);
-		private ImageIcon copy_icon = new ImageIcon("images/COPY.GIF");
-		private JButton copy_button = new JButton(copy_icon);
-		private ImageIcon paste_icon = new ImageIcon("images/PASTE.GIF");
-		private JButton paste_button = new JButton(paste_icon);
-		private ImageIcon undo_icon = new ImageIcon("images/UNDO.png");
-		private JButton undo_button = new JButton(undo_icon);
-		private ImageIcon redo_icon = new ImageIcon("images/REDO.png");
-		private JButton redo_button = new JButton(redo_icon);
-		private ImageIcon option_icon = new ImageIcon("images/OPTION.png");
-		private JToggleButton option_button = new JToggleButton(option_icon);
+		private JToolBar tool=new JToolBar();
+		private ImageIcon new_icon= new ImageIcon("images/NEW.GIF");
+		private JButton new_button= new JButton(new_icon);
+		private ImageIcon open_icon= new ImageIcon("images/OPEN.GIF");
+		private JButton open_button= new JButton(open_icon);
+		private ImageIcon save_icon= new ImageIcon("images/SAVE.GIF");
+		private JButton save_button= new JButton(save_icon);
+		private ImageIcon print_icon= new ImageIcon("images/PRINT.GIF");
+		private JButton print_button= new JButton(print_icon);
+		private ImageIcon cut_icon= new ImageIcon("images/CUT.GIF");
+		private JButton cut_button= new JButton(cut_icon);
+		private ImageIcon copy_icon= new ImageIcon("images/COPY.GIF");
+		private JButton copy_button= new JButton(copy_icon);
+		private ImageIcon paste_icon= new ImageIcon("images/PASTE.GIF");
+		private JButton paste_button= new JButton(paste_icon);
+		private ImageIcon undo_icon= new ImageIcon("images/UNDO.png");
+		private JButton undo_button= new JButton(undo_icon);
+		private ImageIcon redo_icon= new ImageIcon("images/REDO.png");
+		private JButton redo_button= new JButton(redo_icon);
+		private ImageIcon option_icon= new ImageIcon("images/OPTION.png");
+		private JToggleButton option_button= new JToggleButton(option_icon);
 		
 	//******************** Font Bar variables ********************
-		private JToolBar tool_font = new JToolBar();
-		private ImageIcon bold_icon = new ImageIcon("images/BLD.GIF");
-		private JToggleButton bold_button = new JToggleButton(new StyledEditorKit.BoldAction());
-		private ImageIcon italic_icon = new ImageIcon("images/ITL.GIF");
-		private JToggleButton italic_button = new JToggleButton(new StyledEditorKit.ItalicAction());
-		private ImageIcon under_line_icon = new ImageIcon("images/UNDRLN.GIF");
-		private JToggleButton under_line_button = new JToggleButton(new StyledEditorKit.UnderlineAction());
+		private JToolBar tool_font=new JToolBar();
+		private ImageIcon bold_icon= new ImageIcon("images/BLD.GIF");
+		private JToggleButton bold_button=new JToggleButton(new StyledEditorKit.BoldAction());
+		private ImageIcon italic_icon= new ImageIcon("images/ITL.GIF");
+		private JToggleButton italic_button=new JToggleButton(new StyledEditorKit.ItalicAction());
+		private ImageIcon under_line_icon= new ImageIcon("images/UNDRLN.GIF");
+		private JToggleButton under_line_button=new JToggleButton(new StyledEditorKit.UnderlineAction());
+		
+	//******************** Font Bar variables ********************
+
 		private String font_names[]={"Monospaced","Times New Roman","Courier","Tahoma","MS Serif",
 				"Andalus","Monotype Koufi","Simplified Arabic"};
 		private String font_sizes[]={"10","12","14","16","18","20","22","24","26",
@@ -96,13 +108,13 @@ public class Word extends JFrame{
 		private JComboBox font_size = new JComboBox(font_sizes);
 		
 	//******************** Option Menu variables ********************
-		private JToolBar option = new JToolBar();
-		private JToolBar option2 = new JToolBar();
+		private JPanel option = new JPanel();
+		private JPanel option2 = new JPanel();
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
 		private JButton redo_button1 = new JButton("Redo Text");
 		private JButton undo_button1 = new JButton("Undo Text");
-		private JList redo_List = new JList();
-		private JList undo_List = new JList();
+		private JList redo_List = new JList(redoArray);
+		private JList undo_List = new JList(undoArray);
 		JScrollPane redoScroller = new JScrollPane(redo_List);
 		JScrollPane undoScroller = new JScrollPane(undo_List);
 		
@@ -167,11 +179,11 @@ public class Word extends JFrame{
 			
 	//********************* EDIT MENU SECTION ***********************
 		//===================== Cut Item ======================
-			cut= new JMenuItem("Cut", cut_icon);
+			cut= new JMenuItem("Cut");
 			cut.setMnemonic('t');
 			cut.addActionListener(itemHandler);
 		//===================== Copy Item =====================
-			copy= new JMenuItem("Copy", copy_icon);
+			copy= new JMenuItem("Copy");
 			copy.setMnemonic('C');
 			copy.addActionListener(itemHandler);
 		//===================== Replace Item ==================
@@ -179,7 +191,7 @@ public class Word extends JFrame{
 			replace.setMnemonic('e');
 			replace.addActionListener(itemHandler);
 		//===================== Paste Item ====================
-			paste= new JMenuItem("Paste", paste_icon);
+			paste= new JMenuItem("Paste");
 			paste.setMnemonic('P');
 			paste.addActionListener(itemHandler);
 		//===================== Select All Item ===============
@@ -191,13 +203,28 @@ public class Word extends JFrame{
 			undo.setMnemonic('u');
 			undo.addActionListener(itemHandler);
 			//===================== Redo Item =====================
-			redo= new JMenuItem("Redo Text", undo_icon);
+			redo= new JMenuItem("Redo Text", redo_icon);
 			redo.setMnemonic('q');
 			redo.addActionListener(itemHandler);
 			//===================== Advanced Options Item =====================
-			ao= new JMenuItem("Advanced Options");
+			JMenuItem ao = new JMenuItem("Advanced Options");
 			ao.setMnemonic('o');
 			ao.addActionListener(itemHandler);
+			undo= new JMenuItem("Undo");
+			undo.setMnemonic('u');
+			undo.addActionListener(itemHandler);
+			//===================== Copy Item =====================
+			redo= new JMenuItem("Redo");
+			redo.setMnemonic('q');
+			redo.addActionListener(itemHandler);
+
+			undo= new JMenuItem("Undo");
+			undo.setMnemonic('u');
+			undo.addActionListener(itemHandler);
+			//===================== Copy Item =====================
+			redo= new JMenuItem("Redo");
+			redo.setMnemonic('q');
+			redo.addActionListener(itemHandler);
 		//================ Add Items To The Edit Menu ===============
 			edit= new JMenu("Edit");
 			edit.setMnemonic('E');
@@ -205,10 +232,8 @@ public class Word extends JFrame{
 			edit.add(copy);
 			edit.add(replace);
 			edit.add(paste);
-			edit.addSeparator();
 			edit.add(undo);
 			edit.add(redo);
-			edit.add(ao);
 			edit.addSeparator();
 			edit.add(select_all);
 			
@@ -423,16 +448,22 @@ public class Word extends JFrame{
 				}
 			});
 			
-	//*********************** Option SECTION **********************		
+	//*********************** Option SECTION **********************	
 			selected.setMnemonic('s');
 			redo_button1.setToolTipText("Redo Text From Right Selection Box");
 			redo_button1.addActionListener(itemHandler);
+			redo_button1.setPreferredSize(new Dimension(200,50));
 			undo_button1.setToolTipText("Undo Text From Left Selection Box");
 			undo_button1.addActionListener(itemHandler);
+			undo_button1.setPreferredSize(new Dimension(200,50));
 			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			undo_List.setLayoutOrientation(JList.VERTICAL);
+			listSelectionModel = undo_List.getSelectionModel();
+			undo_List.addListSelectionListener(new listSelection());
 			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			redo_List.setLayoutOrientation(JList.VERTICAL);
+			listSelectionModel1 = redo_List.getSelectionModel();
+			redo_List.addListSelectionListener(new listSelection());
 			redoScroller.setPreferredSize(new Dimension(200,500));
 			undoScroller.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
@@ -440,7 +471,8 @@ public class Word extends JFrame{
 			option2.add(selected);
 			option2.setVisible(true);
 			option2.setEnabled(false);
-			option.setLayout(new BoxLayout(option, BoxLayout.LINE_AXIS));
+			option.setLayout(new GridLayout(1,2));
+			option.setPreferredSize(new Dimension(400,50));
 			option.add(undo_button1);
 			option.add(redo_button1);
 			option.setVisible(true);
@@ -476,7 +508,7 @@ public class Word extends JFrame{
 	//********************* MAIN FUNCTION SECTION *******************
 		public static void main(String []args)
 		{
-			Word w=new Word();
+			Word w = new Word();
 			w.setVisible(true);
 			w.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			w.setResizable(true);
@@ -767,6 +799,72 @@ public class Word extends JFrame{
 			text.setBackground(Color.gray);
 			text.setEditable(false);
 		}
+	//********************* Undo Function *************************
+		public void undo(){
+			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
+				if(selected.isSelected()){//selected undo
+					
+				}
+				else{
+					
+				}
+			}
+			else{
+				
+			}
+		}
+	//********************* Redo Function *************************
+		public void redo(){
+			if(!redo_List.isSelectionEmpty()){//checks if there is a selection
+				if(selected.isSelected()){//selected redo
+					
+				}
+				else{
+					
+				}
+			}
+			else{
+				
+			}
+		}	
+	//********************* Find Function for Highlighting *************************	
+		public void FINDHIGHLIGHT(String s){
+			int index = 0;
+			int curOfSet = 0;
+			text.selectAll();
+			String all_text=text.getSelectedText();
+			index=text.getCaretPosition();
+			index = all_text.indexOf(s, curOfSet);
+			curOfSet = index + s.length();
+			if(!selected.isSelected()){
+				if (index > -1)
+					text.select(0,index + curOfSet);
+				else
+				{
+					text.selectAll();
+					all_text=text.getSelectedText();
+					index=curOfSet=0;
+					index = all_text.indexOf(s, curOfSet);
+					curOfSet = index + s.length();
+					if (index > -1)
+						text.select(0, index+curOfSet);
+				}
+			}
+			else{
+				if (index > -1)
+					text.select(index,curOfSet);
+				else
+				{
+					text.selectAll();
+					all_text=text.getSelectedText();
+					index=curOfSet=0;
+					index = all_text.indexOf(s, curOfSet);
+					curOfSet = index + s.length();
+					if (index > -1)
+						text.select(index,curOfSet);
+				}
+			}	
+		}
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
 	{
@@ -804,6 +902,10 @@ public class Word extends JFrame{
 				rplace_frame=new FindReplaceDialog(Word.this);
 				rplace_frame.setVisible(true);
 			}
+			if(event.getSource()==undo_button|| event.getSource()==undo|| event.getSource()== undo_button1)
+				undo();
+			if(event.getSource()==redo_button|| event.getSource()==redo|| event.getSource()== redo_button1)
+				redo();
 			if(event.getSource()==select_all)
 				text.selectAll();
 			if(event.getSource()==bold_button)
@@ -849,6 +951,22 @@ public class Word extends JFrame{
 				}
 				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
 				startPos = text.getDocument().toString().length() + 1;
+				undoArray = undoList.stringArray();
+			}
+		}
+	}
+	
+	public class listSelection implements ListSelectionListener{
+		public void valueChanged(ListSelectionEvent e) {
+			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+			if(lsm.isSelectionEmpty()){}
+			else if(lsm == listSelectionModel){//undo selection
+				int i = lsm.getSelectionMode();
+				FINDHIGHLIGHT(undoArray[i]);
+			}
+			else{//redo selection
+				int i = lsm.getSelectionMode();
+				FINDHIGHLIGHT(redoArray[i]);
 			}
 		}
 	}
