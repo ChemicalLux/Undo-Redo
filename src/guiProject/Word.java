@@ -808,7 +808,15 @@ public class Word extends JFrame{
 		public void undo(){
 			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
 				if(selected.isSelected()){//selected undo
-					text.select(undoArray., selectionEnd);
+					int index = 0;
+					int curOfSet = 0;
+					text.selectAll();
+					String all_text = text.getSelectedText();
+					index = text.getCaretPosition();
+					index = all_text.indexOf(undo_List.getSelectedValue().toString(), curOfSet);
+					curOfSet = undo_List.getSelectedValue().toString().length();
+					text.select(index, curOfSet);
+					text.replaceSelection("");
 				}
 				else{
 					
@@ -822,7 +830,15 @@ public class Word extends JFrame{
 		public void redo(){
 			if(!redo_List.isSelectionEmpty()){//checks if there is a selection
 				if(selected.isSelected()){//selected redo
-					
+					int index = 0;
+					int curOfSet = 0;
+					text.selectAll();
+					String all_text = text.getSelectedText();
+					index = text.getCaretPosition();
+					index = all_text.indexOf(redo_List.getSelectedValue().toString(), curOfSet);
+					curOfSet = redo_List.getSelectedValue().toString().length();
+					text.select(index, curOfSet);
+					text.replaceSelection("");
 				}
 				else{
 					
@@ -963,7 +979,7 @@ public class Word extends JFrame{
 				undoList.addNode(startPos, s2);
 				undoArray = undoList.stringArray();
 				startPos = s.length();
-				text.setSelectionEnd(text.getSelectionEnd());
+				
 			}
 			
 		}
