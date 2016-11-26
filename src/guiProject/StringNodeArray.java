@@ -16,7 +16,7 @@ public class StringNodeArray {
 	
 	public StringNodeArray(){
 		
-		list = new StringNode[8]; //unargumented constructor creates array of size 8
+		list = new StringNode[100]; //unargumented constructor creates array of size 8
 		
 	}
 	
@@ -139,7 +139,7 @@ public class StringNodeArray {
 	 * @param filename
 	 * @return
 	 */
-	public boolean load(){
+/*	public boolean load(){
 		try{
 			StringNodeArray undoList = null;
 			StringNodeArray redoList = null;
@@ -165,5 +165,5 @@ public class StringNodeArray {
 		catch(Exception E){
 			return false;
 		}
-	}
+	}*/
 }

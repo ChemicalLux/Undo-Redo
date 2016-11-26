@@ -19,8 +19,8 @@ public class Word extends JFrame{
 
 		private boolean isExecuted = false;
 
-		private String[] undoArray = new String[1];
-		private String[] redoArray = new String[1];
+		private String[] undoArray = new String[100];
+		private String[] redoArray = new String[100];
 		private ListSelectionModel listSelectionModel;
 		private ListSelectionModel listSelectionModel1;
 		
@@ -423,6 +423,8 @@ public class Word extends JFrame{
 			text=new JTextPane();
 			text.setEditorKit(rtfKit);
 			text.setBorder(BorderFactory.createEtchedBorder());
+			text.addKeyListener(new keyEvent());
+
 		//==================== ADD CARET LISTENER TO THE TEXTPANE =======
 			text.addCaretListener(new CaretListener()
 			{
@@ -466,6 +468,8 @@ public class Word extends JFrame{
 			redo_List.addListSelectionListener(new listSelection());
 			redoScroller.setPreferredSize(new Dimension(200,500));
 			undoScroller.setPreferredSize(new Dimension(200,500));
+			undo_List.setPreferredSize(new Dimension(200,500));
+			redo_List.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
 			option2.setLayout(new BoxLayout(option2, BoxLayout.LINE_AXIS));
 			option2.add(selected);
@@ -615,12 +619,12 @@ public class Word extends JFrame{
 			file.writeChars("*UndoList*");
 				for(int i = 0; i < undoList.length(); i++){
 					file.writeChars("\n");
-					file.writeChars(undoList.getNode(i));
+					file.writeChars(undoList.takeNode(i).toString());
 			}
 			file.writeChars("*RedoList*");
 				for(int k = 0; k < redoList.length(); k++){
 					file.writeChars("\n");
-					file.writeChars(redoList.getNode(k));
+					file.writeChars(redoList.takeNode(k).toString());
 			}
 			file.close();
 			}
@@ -804,7 +808,7 @@ public class Word extends JFrame{
 		public void undo(){
 			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
 				if(selected.isSelected()){//selected undo
-					
+					text.select(undoArray., selectionEnd);
 				}
 				else{
 					
@@ -941,19 +945,31 @@ public class Word extends JFrame{
 			repaint();
 		}
 	}
-	
-	public abstract class keyEvent implements KeyListener{
+	private int startPos = 0;
+	private class keyEvent implements KeyListener{
 		public void keyPressed(KeyEvent ke){
-			if(ke.getKeyChar() == '.' || ke.getKeyChar() == '?' || ke.getKeyChar() == '!' || ke.getKeyCode() == 13){
-				int startPos = 0;
-				if(isExecuted){
-					startPos = text.getDocument().toString().indexOf(ke.getKeyCode(), 0);
-					isExecuted = true;
-				}
-				undoList.addNode(startPos,text.getDocument().toString().substring(startPos, text.getDocument().toString().length()));
-				startPos = text.getDocument().toString().length() + 1;
-				undoArray = undoList.stringArray();
+			/*if(ke.getKeyCode() == ke.VK_ENTER){
+				String s = text.getText();
+				String s2 = s.substring(startPos ,	1);
+				undoArray[0] = s2;
+				startPos = s.length();
+			}*/
 			}
+		public void keyReleased(KeyEvent e) {
+			if(e.getKeyCode() == e.VK_ENTER){
+				text.selectAll();
+				String s = text.getSelectedText();
+				String s2 = s.substring(startPos ,	s.length()-1);
+				undoList.addNode(startPos, s2);
+				undoArray = undoList.stringArray();
+				startPos = s.length();
+				text.setSelectionEnd(text.getSelectionEnd());
+			}
+			
+		}
+		public void keyTyped(KeyEvent e) {
+		
+			
 		}
 	}
 	
