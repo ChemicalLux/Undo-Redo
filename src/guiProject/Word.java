@@ -513,6 +513,7 @@ public class Word extends JFrame{
 			w.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			w.setResizable(true);
 			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			w.NEW_FILE();
 		}
 	//********************* NEW_FILE Function ***********************
 		public void NEW_FILE()
