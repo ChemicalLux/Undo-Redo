@@ -21,8 +21,8 @@ public class Word extends JFrame{
 
 		private String[] undoArray = new String[100];
 		private String[] redoArray = new String[100];
-		private ListSelectionModel listSelectionModel;
-		private ListSelectionModel listSelectionModel1;
+		private int undoCount =0;
+		private int redoCount =0;
 		
 		private Container container;
 		private JTextPane text;
@@ -113,8 +113,10 @@ public class Word extends JFrame{
 		private JCheckBox selected = new JCheckBox("Undo/Redo Selected Only");
 		private JButton redo_button1 = new JButton("Redo Text");
 		private JButton undo_button1 = new JButton("Undo Text");
-		private JList redo_List = new JList(redoArray);
-		private JList undo_List = new JList(undoArray);
+		DefaultListModel redoModel = new DefaultListModel();
+		DefaultListModel undoModel = new DefaultListModel();
+		private JList redo_List = new JList(redoModel);
+		private JList undo_List = new JList(undoModel);
 		JScrollPane redoScroller = new JScrollPane(redo_List);
 		JScrollPane undoScroller = new JScrollPane(undo_List);
 		
@@ -460,12 +462,22 @@ public class Word extends JFrame{
 			undo_button1.setPreferredSize(new Dimension(200,50));
 			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			undo_List.setLayoutOrientation(JList.VERTICAL);
-			listSelectionModel = undo_List.getSelectionModel();
-			undo_List.addListSelectionListener(new listSelection());
+			undo_List.addListSelectionListener(new ListSelectionListener(){
+				public void valueChanged(ListSelectionEvent e){
+					if(e.getValueIsAdjusting()){
+						FINDHIGHLIGHT(e.getSource().toString());
+					}
+				}
+			});
 			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			redo_List.setLayoutOrientation(JList.VERTICAL);
-			listSelectionModel1 = redo_List.getSelectionModel();
-			redo_List.addListSelectionListener(new listSelection());
+			redo_List.addListSelectionListener(new ListSelectionListener(){
+				public void valueChanged(ListSelectionEvent e){
+					if(e.getValueIsAdjusting()){
+						FINDHIGHLIGHT(e.getSource().toString());
+					}
+				}
+			});
 			undo_List.setPreferredSize(new Dimension(200,500));
 			redo_List.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
@@ -810,6 +822,8 @@ public class Word extends JFrame{
 				i=0;
 			}
 			undoArray[i]= s;
+			undoModel.addElement(s);
+			undoCount++;
 		}
 		
 		public void redoArrayAdd(String s, int i){
@@ -817,14 +831,43 @@ public class Word extends JFrame{
 				i=0;
 			}
 			redoArray[i]= s;
+			redoModel.addElement(s);
+			redoCount++;
 		}
 		
 		public void undoArrayRemove(int i){
-			
+			redoArrayAdd(undoArray[i], redoCount);
+			if(i>=undoCount){
+				undoArray[undoCount-1] = "";
+				undoModel.removeElementAt(undoCount-1);
+			}
+			else{
+				for(int j = i; j<undoCount;j++){
+					undoModel.removeElementAt(j);
+				}
+				for(int j = i; j<undoCount;j++){
+					undoArray[j]=undoArray[j+1];
+					undoModel.addElement(undoArray[j+1]);
+				}
+			}
+			undoCount--;
 		}
 		
 		public void redoArrayRemove(int i){
-			
+			undoArrayAdd(redoArray[i], undoCount);
+			if(i>=redoCount){
+				redoArray[redoCount-1] = "";
+			}
+			else{
+				for(int j = i; j<undoCount;j++){
+					redoModel.removeElementAt(j);
+				}
+				for(int j = i; j<redoCount;j++){
+					redoArray[j]=redoArray[j+1];
+					redoModel.addElement(redoArray[j+1]);
+				}
+			}
+			redoCount--;
 		}
 	//********************* Undo Function *************************
 		public void undo(){
@@ -839,6 +882,7 @@ public class Word extends JFrame{
 					curOfSet = undo_List.getSelectedValue().toString().length();
 					text.select(index, curOfSet);
 					text.replaceSelection("");
+					undoArrayRemove(undo_List.getSelectedIndex());
 				}
 				else{
 					
@@ -1012,20 +1056,6 @@ public class Word extends JFrame{
 		}
 	}
 	
-	public class listSelection implements ListSelectionListener{
-		public void valueChanged(ListSelectionEvent e) {
-			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-			if(lsm.isSelectionEmpty()){}
-			else if(lsm == listSelectionModel){//undo selection
-				int i = lsm.getSelectionMode();
-				FINDHIGHLIGHT(undoArray[i]);
-			}
-			else{//redo selection
-				int i = lsm.getSelectionMode();
-				FINDHIGHLIGHT(redoArray[i]);
-			}
-		}
-	}
 	//*************************** PRINT CLASS ************************
 		private class Print implements Printable
 		{
