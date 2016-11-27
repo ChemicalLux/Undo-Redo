@@ -462,24 +462,14 @@ public class Word extends JFrame{
 			undo_button1.setPreferredSize(new Dimension(200,50));
 			undo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			undo_List.setLayoutOrientation(JList.VERTICAL);
-			undo_List.addListSelectionListener(new ListSelectionListener(){
-				public void valueChanged(ListSelectionEvent e){
-					if(e.getValueIsAdjusting()){
-						FINDHIGHLIGHT(e.getSource().toString());
-					}
-				}
-			});
+			undo_List.addListSelectionListener(new SharedListSelectionHandler());
 			redo_List.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 			redo_List.setLayoutOrientation(JList.VERTICAL);
-			redo_List.addListSelectionListener(new ListSelectionListener(){
-				public void valueChanged(ListSelectionEvent e){
-					if(e.getValueIsAdjusting()){
-						FINDHIGHLIGHT(e.getSource().toString());
-					}
-				}
-			});
+			redo_List.addListSelectionListener(new SharedListSelectionHandler());
 			undo_List.setPreferredSize(new Dimension(200,500));
 			redo_List.setPreferredSize(new Dimension(200,500));
+			undo_List.setVisibleRowCount(20);
+			redo_List.setVisibleRowCount(20);
 	//*********************** Sorting ***************
 			option2.setLayout(new BoxLayout(option2, BoxLayout.LINE_AXIS));
 			option2.add(selected);
@@ -842,8 +832,8 @@ public class Word extends JFrame{
 				undoModel.removeElementAt(undoCount-1);
 			}
 			else{
-				for(int j = i; j<undoCount;j++){
-					undoModel.removeElementAt(j);
+				for(int j = i; j<undoCount ;j++){
+					undoModel.removeElement(undoArray[j]);
 				}
 				for(int j = i; j<undoCount;j++){
 					undoArray[j]=undoArray[j+1];
@@ -860,7 +850,7 @@ public class Word extends JFrame{
 			}
 			else{
 				for(int j = i; j<undoCount;j++){
-					redoModel.removeElementAt(j);
+					redoModel.removeElement(redoArray[j]);
 				}
 				for(int j = i; j<redoCount;j++){
 					redoArray[j]=redoArray[j+1];
@@ -919,15 +909,7 @@ public class Word extends JFrame{
 		public void redo(){
 			if(!redo_List.isSelectionEmpty()){//checks if there is a selection
 				if(selected.isSelected()){//selected redo
-					int index = 0;
-					int curOfSet = 0;
-					text.selectAll();
-					String all_text = text.getSelectedText();
-					index = text.getCaretPosition();
-					index = all_text.indexOf(redo_List.getSelectedValue().toString(), curOfSet);
-					curOfSet = redo_List.getSelectedValue().toString().length();
-					text.select(index, curOfSet);
-					text.replaceSelection("");
+					
 				}
 				else{
 					
@@ -939,41 +921,25 @@ public class Word extends JFrame{
 		}	
 	//********************* Find Function for Highlighting *************************	
 		public void FINDHIGHLIGHT(String s){
-			int index = 0;
-			int curOfSet = 0;
+			int index=0;
+			int curOfSet=0;
 			text.selectAll();
 			String all_text=text.getSelectedText();
 			index=text.getCaretPosition();
 			index = all_text.indexOf(s, curOfSet);
 			curOfSet = index + s.length();
-			if(!selected.isSelected()){
-				if (index > -1)
-					text.select(0,index + curOfSet);
-				else
-				{
-					text.selectAll();
-					all_text=text.getSelectedText();
-					index=curOfSet=0;
-					index = all_text.indexOf(s, curOfSet);
-					curOfSet = index + s.length();
-					if (index > -1)
-						text.select(0, index+curOfSet);
-				}
-			}
-			else{
+			if (index > -1)
+				text.select(index,curOfSet);
+			else
+			{
+				text.selectAll();
+				all_text=text.getSelectedText();
+				index=curOfSet=0;
+				index = all_text.indexOf(s, curOfSet);
+				curOfSet = index + s.length();
 				if (index > -1)
 					text.select(index,curOfSet);
-				else
-				{
-					text.selectAll();
-					all_text=text.getSelectedText();
-					index=curOfSet=0;
-					index = all_text.indexOf(s, curOfSet);
-					curOfSet = index + s.length();
-					if (index > -1)
-						text.select(index,curOfSet);
-				}
-			}	
+			}
 		}
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
@@ -1066,10 +1032,11 @@ public class Word extends JFrame{
 				String s = text.getSelectedText();
 				String s2 = s.substring(startPos ,	s.length()-1);
 				undoList.addNode(startPos, s2);
-				undoArrayAdd(s2, undoList.length()-1);
+				undoArrayAdd(s2, undoCount);
 				startPos = s.length();
-				text.select(0, 0);
-				
+				int end = text.getSelectionEnd();
+				text.setSelectionStart(end);
+				text.setSelectionEnd(end);
 			}
 			
 		}
@@ -1077,6 +1044,16 @@ public class Word extends JFrame{
 		
 			
 		}
+	}
+	
+	public class SharedListSelectionHandler implements ListSelectionListener{
+		public void valueChanged(ListSelectionEvent e){
+			if(e.getValueIsAdjusting()== false){
+				if(!undo_List.isSelectionEmpty() || !redo_List.isSelectionEmpty()){
+					FINDHIGHLIGHT(e.getSource().toString());
+				}	
+			}
+		}	
 	}
 	
 	//*************************** PRINT CLASS ************************
