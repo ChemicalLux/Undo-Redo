@@ -886,11 +886,33 @@ public class Word extends JFrame{
 					redoList.addNode(undoList.takeNode(undo_List.getSelectedIndex()));
 				}
 				else{
-					
+					for(int j = undoCount - 1; j >= undo_List.getSelectedIndex(); j--){
+						int index = 0;
+						int curOfSet = 0;
+						text.selectAll();
+						String all_text = text.getSelectedText();
+						index = text.getCaretPosition();
+						index = all_text.indexOf(undoArray[j], curOfSet);
+						curOfSet = undoArray[j].length();
+						text.select(index, curOfSet);
+						text.replaceSelection("");
+						undoArrayRemove(j);
+						redoList.addNode(undoList.takeNode(j));
+					}
 				}
 			}
 			else{
-				
+				int index = 0;
+				int curOfSet = 0;
+				text.selectAll();
+				String all_text = text.getSelectedText();
+				index = text.getCaretPosition();
+				index = all_text.indexOf(undoArray[undoCount - 1], curOfSet);
+				curOfSet = undoArray[undoCount-1].length();
+				text.select(index, curOfSet);
+				text.replaceSelection("");
+				undoArrayRemove(undoCount - 1);
+				redoList.addNode(undoList.takeNode(undoCount - 1));
 			}
 		}
 	//********************* Redo Function *************************
