@@ -883,6 +883,7 @@ public class Word extends JFrame{
 					text.select(index, curOfSet);
 					text.replaceSelection("");
 					undoArrayRemove(undo_List.getSelectedIndex());
+					redoList.addNode(undoList.takeNode(undo_List.getSelectedIndex()));
 				}
 				else{
 					
