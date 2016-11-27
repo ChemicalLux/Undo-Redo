@@ -33,7 +33,7 @@ public class Word extends JFrame{
 		public FindReplaceDialog rplace_frame;
 		private JPanel optionMenu = new JPanel();
 		private JPanel optMenu = new JPanel(flow);
-		private JPanel redoUndoMenu = new JPanel(flow);
+		private JPanel redoUndoMenu = new JPanel();
 		
 		private String output="";
 		private String output_stream="";
@@ -466,8 +466,6 @@ public class Word extends JFrame{
 			redo_List.setLayoutOrientation(JList.VERTICAL);
 			listSelectionModel1 = redo_List.getSelectionModel();
 			redo_List.addListSelectionListener(new listSelection());
-			redoScroller.setPreferredSize(new Dimension(200,500));
-			undoScroller.setPreferredSize(new Dimension(200,500));
 			undo_List.setPreferredSize(new Dimension(200,500));
 			redo_List.setPreferredSize(new Dimension(200,500));
 	//*********************** Sorting ***************
@@ -481,8 +479,10 @@ public class Word extends JFrame{
 			option.add(redo_button1);
 			option.setVisible(true);
 			option.setEnabled(false);
+			redoUndoMenu.setLayout(new GridLayout(1,2));
 			redoUndoMenu.add(undoScroller);
 			redoUndoMenu.add(redoScroller);
+			redoUndoMenu.setPreferredSize(new Dimension(400,400));
 	//*********************** Adding to Option Menu ***************
 			optionMenu.setLayout(new BoxLayout(optionMenu, BoxLayout.PAGE_AXIS));
 			optionMenu.setBorder(BorderFactory.createEtchedBorder());
@@ -490,7 +490,7 @@ public class Word extends JFrame{
 			optionMenu.add(option);
 			optionMenu.add(redoUndoMenu);
 			optionMenu.setVisible(false);
-			optionMenu.setSize(400,400);
+			optionMenu.setSize(400,500);
 	//******************* Main GUI *******************************
 			SetDisable_JTextPane();
 			container=getContentPane();
@@ -804,6 +804,28 @@ public class Word extends JFrame{
 			text.setBackground(Color.gray);
 			text.setEditable(false);
 		}
+	//********************* Array Functions ***********************
+		public void undoArrayAdd(String s, int i){
+			if(i<0){
+				i=0;
+			}
+			undoArray[i]= s;
+		}
+		
+		public void redoArrayAdd(String s, int i){
+			if(i<0){
+				i=0;
+			}
+			redoArray[i]= s;
+		}
+		
+		public void undoArrayRemove(int i){
+			
+		}
+		
+		public void redoArrayRemove(int i){
+			
+		}
 	//********************* Undo Function *************************
 		public void undo(){
 			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
@@ -977,8 +999,9 @@ public class Word extends JFrame{
 				String s = text.getSelectedText();
 				String s2 = s.substring(startPos ,	s.length()-1);
 				undoList.addNode(startPos, s2);
-				undoArray = undoList.stringArray();
+				undoArrayAdd(s2, undoList.length()-1);
 				startPos = s.length();
+				text.select(0, 0);
 				
 			}
 			

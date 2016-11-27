@@ -16,7 +16,7 @@ public class StringNodeArray {
 	
 	public StringNodeArray(){
 		
-		list = new StringNode[100]; //unargumented constructor creates array of size 8
+		list = new StringNode[100]; //unargumented constructor creates array of size 100
 		
 	}
 	
