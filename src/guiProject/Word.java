@@ -894,7 +894,10 @@ public class Word extends JFrame{
 					StringNode n = redoList.takeNode(s);
 					text.setSelectionEnd(n.getPos()+1);
 					text.setSelectionStart(n.getPos());
-					text.replaceSelection(redo_List.getSelectedValue().toString() + text.getSelectedText());
+					if(text.getSelectedText()!=null)
+						text.replaceSelection(redo_List.getSelectedValue().toString() + text.getSelectedText());
+					else
+						text.replaceSelection(redo_List.getSelectedValue().toString());
 					undoList.addNode(n);
 					redoArrayRemove(s);
 				}
@@ -903,7 +906,10 @@ public class Word extends JFrame{
 						StringNode n = redoList.takeNode(s);
 						text.setSelectionEnd(n.getPos()+1);
 						text.setSelectionStart(n.getPos());
-						text.replaceSelection(n.getData() + text.getSelectedText());
+						if(text.getSelectedText()!=null)
+							text.replaceSelection(n.getData() + text.getSelectedText());
+						else
+							text.replaceSelection(n.getData());
 						undoList.addNode(n);
 						redoArrayRemove(s);
 					}
@@ -913,7 +919,10 @@ public class Word extends JFrame{
 				StringNode n = redoList.takeNode(redoCount-1);
 				text.setSelectionEnd(n.getPos()+1);
 				text.setSelectionStart(n.getPos());
-				text.replaceSelection(n.getData() + text.getSelectedText());
+				if(text.getSelectedText()!=null)
+					text.replaceSelection(n.getData() + text.getSelectedText());
+				else
+					text.replaceSelection(n.getData());
 				undoList.addNode(n);
 				redoArrayRemove(redoCount-1);
 			}
@@ -1058,8 +1067,10 @@ public class Word extends JFrame{
 	
 	public class SharedListSelectionHandler implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent e){
-			if(!undo_List.isSelectionEmpty() || !redo_List.isSelectionEmpty()){
-				FINDHIGHLIGHT(e.getSource().toString());	
+			if(e.getValueIsAdjusting()==false){
+				if(!undo_List.isSelectionEmpty() || !redo_List.isSelectionEmpty()){
+					FINDHIGHLIGHT(e.getSource().toString());
+				}
 			}
 		}	
 	}
