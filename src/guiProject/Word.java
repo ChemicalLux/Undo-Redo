@@ -894,8 +894,9 @@ public class Word extends JFrame{
 					StringNode n = redoList.takeNode(s);
 					text.setSelectionEnd(n.getPos()+1);
 					text.setSelectionStart(n.getPos());
-					text.replaceSelection(n.getData() + text.getSelectedText());
+					text.replaceSelection(redo_List.getSelectedValue().toString() + text.getSelectedText());
 					undoList.addNode(n);
+					redoArrayRemove(s);
 				}
 				else{
 					for(int j = redoCount -1; j >=s; j--){
@@ -904,6 +905,7 @@ public class Word extends JFrame{
 						text.setSelectionStart(n.getPos());
 						text.replaceSelection(n.getData() + text.getSelectedText());
 						undoList.addNode(n);
+						redoArrayRemove(s);
 					}
 				}
 			}
@@ -913,6 +915,7 @@ public class Word extends JFrame{
 				text.setSelectionStart(n.getPos());
 				text.replaceSelection(n.getData() + text.getSelectedText());
 				undoList.addNode(n);
+				redoArrayRemove(redoCount-1);
 			}
 		}	
 	//********************* Find Function *************************
