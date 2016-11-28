@@ -1001,8 +1001,7 @@ public class Word extends JFrame{
 				if(font_item[k].isSelected())
 				{
 					font_name.setSelectedIndex(k);
-					text.setFont(new Font(font_names[k],font_style,
-										font_size_i));
+					text.setFont(new Font(font_names[k],font_style,font_size_i));
 					break;
 				}
 			for(int i=0;i<color_name.length;i++)
@@ -1026,7 +1025,7 @@ public class Word extends JFrame{
 			}*/
 			}
 		public void keyReleased(KeyEvent e) {
-			if(e.getKeyCode() == e.VK_ENTER){
+			if(e.getKeyCode() == e.VK_ENTER || e.getKeyChar() == '.' || e.getKeyChar() == '?' || e.getKeyChar()== '!'){
 				text.selectAll();
 				String s = text.getSelectedText();
 				String s2 = s.substring(startPos ,	s.length()-1);
