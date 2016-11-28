@@ -1101,7 +1101,9 @@ public class Word extends JFrame{
 		public void valueChanged(ListSelectionEvent e){
 			if(e.getValueIsAdjusting()==false){
 				if(!undo_List.isSelectionEmpty() || !redo_List.isSelectionEmpty()){
-					FINDHIGHLIGHT(e.getSource().toString());
+					int pos = undo_List.getSelectedIndex();
+					FINDHIGHLIGHT(undoArray[pos].toString());
+					
 				}
 			}
 		}	
