@@ -928,17 +928,16 @@ public class Word extends JFrame{
 			index=text.getCaretPosition();
 			index = all_text.indexOf(s, curOfSet);
 			curOfSet = index + s.length();
-			if (index > -1)
-				text.select(index,curOfSet);
+			if (selected.isSelected()){
+				text.setSelectionEnd(curOfSet);
+				text.setSelectionStart(index);
+			}	
 			else
 			{
-				text.selectAll();
-				all_text=text.getSelectedText();
-				index=curOfSet=0;
-				index = all_text.indexOf(s, curOfSet);
-				curOfSet = index + s.length();
-				if (index > -1)
-					text.select(index,curOfSet);
+				
+				text.setSelectionEnd(curOfSet);
+				text.setSelectionStart(0);
+				
 			}
 		}
 	//********************* HANDLING THE ACTIONLISTENER **************
