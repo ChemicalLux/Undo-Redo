@@ -1040,6 +1040,7 @@ public class Word extends JFrame{
 				text.selectAll();
 				String s = text.getSelectedText();
 				String s2 = s.substring(startPos ,	s.length()-1);
+				if(s2 != null){
 				if(e.getKeyChar()== '.'){
 					s2 += ".";
 				}
@@ -1056,6 +1057,7 @@ public class Word extends JFrame{
 				int end = text.getSelectionEnd();
 				text.setSelectionStart(end);
 				text.setSelectionEnd(end);
+				}
 			}
 			
 		}
