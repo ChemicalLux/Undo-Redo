@@ -549,6 +549,12 @@ public class Word extends JFrame{
 			}
 			catch(Exception ex)
 			{}
+			undoModel.removeAllElements();
+			redoModel.removeAllElements();
+			undoArray = new String[100];
+			redoArray = new String[100];
+			undoList = new StringNodeArray();
+			redoList = new StringNodeArray();
 			opened=false;
 			new_file=true;
 			saved_once=false;
@@ -863,27 +869,36 @@ public class Word extends JFrame{
 		private int index = 0;
 		private int curOfSet = 0;
 		public void undo(){
+			String temp;
 			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
 				if(selected.isSelected()){//selected undo
-					FIND(undo_List.getSelectedValue().toString());
+					temp =undo_List.getSelectedValue().toString();
+					FIND(temp);
+					int start = text.getSelectionStart();
 					text.replaceSelection("");
 					undoArrayRemove(undo_List.getSelectedIndex());
 					redoList.addNode(undoList.takeNode(undo_List.getSelectedIndex()));
+					shuffle(temp.length(),start);
 				}
 				else{
 					for(int j = undoCount - 1; j >= undo_List.getSelectedIndex(); j--){
-						FIND(undo_List.getSelectedValue().toString());
+						temp =undo_List.getSelectedValue().toString();
+						FIND(temp);
+						int start = text.getSelectionStart();
 						text.replaceSelection("");
 						undoArrayRemove(j);
 						redoList.addNode(undoList.takeNode(j));
+						shuffle(temp.length(),start);
 					}
 				}
 			}
 			else{
 				FIND(undoArray[undoCount -1]);
+				int start = text.getSelectionStart();
 				text.replaceSelection("");
 				undoArrayRemove(undoCount - 1);
 				redoList.addNode(undoList.takeNode(undoCount - 1));
+				shuffle(undoArray[undoCount-1].length(),start);
 			}
 		}
 	//********************* Redo Function *************************
@@ -926,7 +941,22 @@ public class Word extends JFrame{
 				undoList.addNode(n);
 				redoArrayRemove(redoCount-1);
 			}
-		}	
+		}
+		
+		public void shuffle(int n, int p){
+			for(int i=0; i < redoCount; i++){
+				int temp = redoList.getSNode(i).getPos();
+				if(temp > p){
+					if(temp - n < 0){
+						temp = 0;
+					}
+					else{
+						temp -= n;
+					}
+					redoList.getSNode(i).setPos(temp);
+				}	
+			}
+		}
 	//********************* Find Function *************************
 		public void FIND(String s){
 			text.selectAll();

@@ -31,6 +31,10 @@ public class StringNodeArray {
 		return list[pos].toString();
 	}
 	
+	public StringNode getSNode(int pos){
+		return list[pos];
+	}
+	
 	public void addNode(StringNode in){//add node, node constructed in tester class
 		
 		if (count == list.length){
