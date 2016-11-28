@@ -860,31 +860,19 @@ public class Word extends JFrame{
 			redoCount--;
 		}
 	//********************* Undo Function *************************
+		private int index = 0;
+		private int curOfSet = 0;
 		public void undo(){
 			if(!undo_List.isSelectionEmpty()){//checks if there is a selection
 				if(selected.isSelected()){//selected undo
-					int index = 0;
-					int curOfSet = 0;
-					text.selectAll();
-					String all_text = text.getSelectedText();
-					index = text.getCaretPosition();
-					index = all_text.indexOf(undo_List.getSelectedValue().toString(), curOfSet);
-					curOfSet = undo_List.getSelectedValue().toString().length();
-					text.select(index, curOfSet);
+					FIND(undo_List.getSelectedValue().toString());
 					text.replaceSelection("");
 					undoArrayRemove(undo_List.getSelectedIndex());
 					redoList.addNode(undoList.takeNode(undo_List.getSelectedIndex()));
 				}
 				else{
 					for(int j = undoCount - 1; j >= undo_List.getSelectedIndex(); j--){
-						int index = 0;
-						int curOfSet = 0;
-						text.selectAll();
-						String all_text = text.getSelectedText();
-						index = text.getCaretPosition();
-						index = all_text.indexOf(undoArray[j], curOfSet);
-						curOfSet = undoArray[j].length();
-						text.select(index, curOfSet);
+						FIND(undo_List.getSelectedValue().toString());
 						text.replaceSelection("");
 						undoArrayRemove(j);
 						redoList.addNode(undoList.takeNode(j));
@@ -892,14 +880,7 @@ public class Word extends JFrame{
 				}
 			}
 			else{
-				int index = 0;
-				int curOfSet = 0;
-				text.selectAll();
-				String all_text = text.getSelectedText();
-				index = text.getCaretPosition();
-				index = all_text.indexOf(undoArray[undoCount - 1], curOfSet);
-				curOfSet = undoArray[undoCount-1].length();
-				text.select(index, curOfSet);
+				FIND(undo_List.getSelectedValue().toString());
 				text.replaceSelection("");
 				undoArrayRemove(undoCount - 1);
 				redoList.addNode(undoList.takeNode(undoCount - 1));
@@ -919,6 +900,26 @@ public class Word extends JFrame{
 				
 			}
 		}	
+	//********************* Find Function *************************
+		public void FIND(String s){
+			text.selectAll();
+			String all_text=text.getSelectedText();
+			index=text.getCaretPosition();
+			index = all_text.indexOf(s, curOfSet);
+			curOfSet = index + s.length();
+			if (index > -1)
+				text.select(index,curOfSet);
+			else
+			{
+				text.selectAll();
+				all_text=text.getSelectedText();
+				index=curOfSet=0;
+				index = all_text.indexOf(s, curOfSet);
+				curOfSet = index + s.length();
+				if (index > -1)
+					text.select(index,curOfSet);
+			}
+		}
 	//********************* Find Function for Highlighting *************************	
 		public void FINDHIGHLIGHT(String s){
 			int index=0;
@@ -1029,6 +1030,16 @@ public class Word extends JFrame{
 				text.selectAll();
 				String s = text.getSelectedText();
 				String s2 = s.substring(startPos ,	s.length()-1);
+				if(e.getKeyChar()== '.'){
+					s2 += ".";
+				}
+				else if(e.getKeyChar()== '?'){
+					s2 += "?";
+				}
+				else if(e.getKeyChar()== '!'){
+					s2 += "!";
+				}
+				
 				undoList.addNode(startPos, s2);
 				undoArrayAdd(s2, undoCount);
 				startPos = s.length();
@@ -1046,10 +1057,8 @@ public class Word extends JFrame{
 	
 	public class SharedListSelectionHandler implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent e){
-			if(e.getValueIsAdjusting()== false){
-				if(!undo_List.isSelectionEmpty() || !redo_List.isSelectionEmpty()){
-					FINDHIGHLIGHT(e.getSource().toString());
-				}	
+			if(!undo_List.isSelectionEmpty() || !redo_List.isSelectionEmpty()){
+				FINDHIGHLIGHT(e.getSource().toString());	
 			}
 		}	
 	}
