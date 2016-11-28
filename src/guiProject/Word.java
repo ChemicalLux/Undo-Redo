@@ -880,7 +880,7 @@ public class Word extends JFrame{
 				}
 			}
 			else{
-				FIND(undo_List.getSelectedValue().toString());
+				FIND(undoArray[undoCount -1]);
 				text.replaceSelection("");
 				undoArrayRemove(undoCount - 1);
 				redoList.addNode(undoList.takeNode(undoCount - 1));
@@ -889,15 +889,30 @@ public class Word extends JFrame{
 	//********************* Redo Function *************************
 		public void redo(){
 			if(!redo_List.isSelectionEmpty()){//checks if there is a selection
+				int s = redo_List.getSelectedIndex();
 				if(selected.isSelected()){//selected redo
-					
+					StringNode n = redoList.takeNode(s);
+					text.setSelectionEnd(n.getPos()+1);
+					text.setSelectionStart(n.getPos());
+					text.replaceSelection(n.getData() + text.getSelectedText());
+					undoList.addNode(n);
 				}
 				else{
-					
+					for(int j = redoCount -1; j >=s; j--){
+						StringNode n = redoList.takeNode(s);
+						text.setSelectionEnd(n.getPos()+1);
+						text.setSelectionStart(n.getPos());
+						text.replaceSelection(n.getData() + text.getSelectedText());
+						undoList.addNode(n);
+					}
 				}
 			}
 			else{
-				
+				StringNode n = redoList.takeNode(redoCount-1);
+				text.setSelectionEnd(n.getPos()+1);
+				text.setSelectionStart(n.getPos());
+				text.replaceSelection(n.getData() + text.getSelectedText());
+				undoList.addNode(n);
 			}
 		}	
 	//********************* Find Function *************************
@@ -922,24 +937,7 @@ public class Word extends JFrame{
 		}
 	//********************* Find Function for Highlighting *************************	
 		public void FINDHIGHLIGHT(String s){
-			int index=0;
-			int curOfSet=0;
-			text.selectAll();
-			String all_text=text.getSelectedText();
-			index=text.getCaretPosition();
-			index = all_text.indexOf(s, curOfSet);
-			curOfSet = index + s.length();
-			if (selected.isSelected()){
-				text.setSelectionEnd(curOfSet);
-				text.setSelectionStart(index);
-			}	
-			else
-			{
-				
-				text.setSelectionEnd(curOfSet);
-				text.setSelectionStart(0);
-				
-			}
+			FIND(s);
 		}
 	//********************* HANDLING THE ACTIONLISTENER **************
 	private class ItemHandler implements ActionListener
