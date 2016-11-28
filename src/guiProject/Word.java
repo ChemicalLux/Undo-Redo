@@ -468,8 +468,8 @@ public class Word extends JFrame{
 			redo_List.addListSelectionListener(new SharedListSelectionHandler());
 			undo_List.setPreferredSize(new Dimension(200,500));
 			redo_List.setPreferredSize(new Dimension(200,500));
-			undo_List.setVisibleRowCount(20);
-			redo_List.setVisibleRowCount(20);
+			undo_List.setVisibleRowCount(10);
+			redo_List.setVisibleRowCount(10);
 	//*********************** Sorting ***************
 			option2.setLayout(new BoxLayout(option2, BoxLayout.LINE_AXIS));
 			option2.add(selected);
